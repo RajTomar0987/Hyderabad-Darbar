@@ -49,7 +49,7 @@ export default function Navbar() {
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           scrolled
             ? "border-b border-ink-950/10 bg-cream-50/90 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl"
-            : "border-b border-transparent bg-gradient-to-b from-black/60 to-transparent"
+            : "border-b-0 bg-gradient-to-b from-black/60 via-black/10 to-transparent"
         }`}
       >
         <nav
@@ -57,15 +57,11 @@ export default function Navbar() {
           className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8"
         >
           <Link to="/" className="group flex items-center gap-3" aria-label="Hyderabad Darbar home">
-            <span
-              className={`grid h-10 w-10 place-items-center rounded-full border font-display text-lg ${
-                scrolled
-                  ? "border-gold-600/40 bg-ink-950 text-gold-300"
-                  : "border-gold-300/40 bg-white/10 text-gold-300 backdrop-blur"
-              }`}
-            >
-              HD
-            </span>
+            <img
+              src="/logo.svg"
+              alt="Hyderabad Darbar logo"
+              className="h-10 w-10 rounded-md object-cover ring-1 ring-black/10"
+            />
             <span className="leading-tight">
               <span
                 className={`font-display block text-[17px] font-semibold tracking-wide ${
@@ -145,7 +141,14 @@ export default function Navbar() {
             aria-label="Menu"
           >
             <div className="flex h-[72px] items-center justify-between px-5">
-              <span className="font-display text-lg tracking-wide text-cream-50">HYDERABAD DARBAR</span>
+              <span className="flex items-center gap-3">
+                <img
+                  src="/logo.svg"
+                  alt="Hyderabad Darbar logo"
+                  className="h-9 w-9 rounded-md object-cover"
+                />
+                <span className="font-display text-lg tracking-wide text-cream-50">HYDERABAD DARBAR</span>
+              </span>
               <button
                 type="button"
                 onClick={() => setOpen(false)}

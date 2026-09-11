@@ -9,9 +9,11 @@ export default function Footer() {
         <div className="grid gap-12 lg:grid-cols-[1.3fr_0.8fr_1fr_0.9fr]">
           <div>
             <div className="flex items-center gap-3">
-              <span className="font-display grid h-11 w-11 place-items-center rounded-full border border-gold-500/40 bg-white/5 text-lg text-gold-300">
-                HD
-              </span>
+              <img
+                src="/logo.svg"
+                alt="Hyderabad Darbar logo"
+                className="h-11 w-11 rounded-md object-cover"
+              />
               <div>
                 <p className="font-display text-xl font-semibold tracking-wide">HYDERABAD DARBAR</p>
                 <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold-400">
