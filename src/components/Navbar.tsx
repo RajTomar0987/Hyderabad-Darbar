@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, Phone, X } from "lucide-react";
+import { Menu, Phone, User as UserIcon, Shield, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { NAV_LINKS, SITE } from "../site";
+import { useAuth } from "../context/AuthContext";
 
 function linkCls(isActive: boolean, scrolled: boolean) {
   return `relative text-[13px] font-semibold uppercase tracking-[0.18em] transition-colors ${
@@ -18,6 +19,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const loc = useLocation();
+  const { isAuthenticated, isAdmin } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -35,7 +37,7 @@ export default function Navbar() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open ]);
+  }, [open]);
 
   return (
     <>
@@ -97,19 +99,62 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden items-center gap-3 xl:gap-4 lg:flex">
             <a
               href={SITE.phoneHref}
-              className={`flex items-center gap-2 text-sm font-semibold ${scrolled ? "text-ink-950" : "text-cream-50/90"}`}
+              className={`flex items-center gap-2 text-sm font-semibold transition ${
+                scrolled ? "text-ink-950 hover:text-gold-600" : "text-cream-50/90 hover:text-gold-300"
+              }`}
             >
               <Phone size={16} className="text-gold-500" aria-hidden="true" />
               {SITE.phoneDisplay}
             </a>
+
+            {/* Customer / Admin Auth Button */}
+            {isAuthenticated ? (
+              isAdmin ? (
+                <Link
+                  to="/admin"
+                  className={`inline-flex items-center justify-center gap-1.5 rounded-full border px-5 py-2.5 text-[13px] font-extrabold uppercase tracking-[0.14em] transition active:scale-[0.98] ${
+                    scrolled
+                      ? "border-red-600/40 bg-red-950/10 text-red-700 hover:bg-red-950/20"
+                      : "border-gold-400/50 bg-ink-900/80 text-gold-300 hover:bg-ink-800"
+                  }`}
+                >
+                  <Shield size={14} className="text-gold-400" />
+                  <span>Admin</span>
+                </Link>
+              ) : (
+                <Link
+                  to="/account"
+                  className={`inline-flex items-center justify-center gap-1.5 rounded-full border px-5 py-2.5 text-[13px] font-extrabold uppercase tracking-[0.14em] transition active:scale-[0.98] ${
+                    scrolled
+                      ? "border-ink-950/20 bg-ink-950/5 text-ink-950 hover:border-gold-500"
+                      : "border-gold-500/40 bg-ink-900/80 text-cream-100 hover:border-gold-400 hover:text-gold-300"
+                  }`}
+                >
+                  <UserIcon size={14} className="text-gold-400" />
+                  <span>Account</span>
+                </Link>
+              )
+            ) : (
+              <Link
+                to="/login"
+                className={`inline-flex items-center justify-center rounded-full border px-5 py-2.5 text-[13px] font-extrabold uppercase tracking-[0.14em] transition active:scale-[0.98] ${
+                  scrolled
+                    ? "border-gold-600/80 bg-gold-600/10 text-ink-950 hover:bg-gold-500 hover:border-gold-500 hover:text-ink-950"
+                    : "border-gold-400/80 bg-ink-950/40 text-cream-50 backdrop-blur-sm hover:bg-gold-500 hover:border-gold-500 hover:text-ink-950"
+                }`}
+              >
+                Sign In
+              </Link>
+            )}
+
             <a
               href={SITE.orderUrl}
               target="_blank"
               rel="noreferrer"
-              className="rounded-full bg-gold-500 px-5 py-2.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-950 transition hover:bg-gold-300 active:scale-[0.98]"
+              className="inline-flex items-center justify-center rounded-full bg-gold-500 px-5 py-2.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-950 transition hover:bg-gold-300 active:scale-[0.98]"
             >
               Order Online
             </a>
@@ -164,12 +209,12 @@ export default function Navbar() {
                   key={l.to}
                   initial={{ opacity: 0, x: -24 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.06 * i }}
+                  transition={{ delay: 0.05 * i }}
                 >
                   <NavLink
                     to={l.to}
                     className={({ isActive }) =>
-                      `font-display block border-b border-white/10 py-4 text-4xl ${
+                      `font-display block border-b border-white/10 py-3.5 text-3xl ${
                         isActive ? "text-gold-300 italic" : "text-cream-50"
                       }`
                     }
@@ -178,6 +223,29 @@ export default function Navbar() {
                   </NavLink>
                 </motion.div>
               ))}
+
+              {/* Mobile Auth Item */}
+              <motion.div
+                initial={{ opacity: 0, x: -24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.05 * (NAV_LINKS.length + 1) }}
+              >
+                {isAuthenticated ? (
+                  <NavLink
+                    to={isAdmin ? "/admin" : "/account"}
+                    className="font-display block border-b border-white/10 py-3.5 text-3xl text-gold-400"
+                  >
+                    {isAdmin ? "Admin Console" : "My Account"}
+                  </NavLink>
+                ) : (
+                  <NavLink
+                    to="/login"
+                    className="font-display block border-b border-white/10 py-3.5 text-3xl text-gold-300"
+                  >
+                    Sign In / Register
+                  </NavLink>
+                )}
+              </motion.div>
             </nav>
             <div className="space-y-3 p-6">
               <a

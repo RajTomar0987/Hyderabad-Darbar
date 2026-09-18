@@ -7,9 +7,13 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Dependencies
+node_modules/
+backend/node_modules/
+
+# Production build output
+dist/
+dist-ssr/
 *.local
 
 # Editor directories and files
@@ -23,4 +27,15 @@ dist-ssr
 *.sln
 *.sw?
 .rocketride/
+
+# Environment files and secrets
 .env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+*.pem
+*.key
+*service-account*.json
+*serviceAccount*.json

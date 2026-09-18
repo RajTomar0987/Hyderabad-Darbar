@@ -4,12 +4,19 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
 import MobileCTA from "./components/MobileCTA";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 import AboutPage from "./pages/AboutPage";
+import AccountPage from "./pages/AccountPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
+import AdminLoginPage from "./pages/AdminLoginPage";
 import CateringPage from "./pages/CateringPage";
 import ContactPage from "./pages/ContactPage";
 import GalleryPage from "./pages/GalleryPage";
 import Home from "./pages/Home";
+import LoginPage from "./pages/LoginPage";
 import MenuPage from "./pages/MenuPage";
+import SignupPage from "./pages/SignupPage";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -37,22 +44,48 @@ export default function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <Navbar />
-      <div className="pb-[72px] md:pb-0">
-        <Routes>
-          <Route path="/" element={<main id="main"><Home /></main>} />
-          <Route path="/menu" element={<MenuPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/catering" element={<CateringPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="*" element={<main id="main"><Home /></main>} />
-        </Routes>
-      </div>
-      <Footer />
-      <MobileCTA />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <Navbar />
+        <div className="pb-[72px] md:pb-0">
+          <Routes>
+            <Route path="/" element={<main id="main"><Home /></main>} />
+            <Route path="/menu" element={<MenuPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/catering" element={<CateringPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            
+            {/* Customer Auth & Account Routes */}
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/account"
+              element={
+                <ProtectedRoute>
+                  <AccountPage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Admin Auth & Dashboard Routes */}
+            <Route path="/admin/login" element={<AdminLoginPage />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminDashboardPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path="*" element={<main id="main"><Home /></main>} />
+          </Routes>
+        </div>
+        <Footer />
+        <MobileCTA />
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

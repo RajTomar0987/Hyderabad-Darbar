@@ -1,0 +1,1129 @@
+{
+  "users": [
+    {
+      "id": "usr-admin-01",
+      "name": "Darbar Administrator",
+      "email": "admin@hyderabaddarbar.com",
+      "phone": "+61 3 9791 0000",
+      "password": "$2b$10$YePwNxLmlT3eIAmWZE2zuOGqJ5vyO76pg4m8nEdowHb.gsq3PGBFS",
+      "role": "admin",
+      "createdAt": "2026-09-17T13:36:12.690Z",
+      "password_hash": "$2b$10$YePwNxLmlT3eIAmWZE2zuOGqJ5vyO76pg4m8nEdowHb.gsq3PGBFS",
+      "firebase_uid": "firebase_admin_1789745470209",
+      "updated_at": "2026-09-18T15:31:10.426Z"
+    },
+    {
+      "id": "usr-mu5kp2a8-yn21",
+      "name": "Nawaz Khan",
+      "email": "testcustomer_1789652172386@darbar.test",
+      "phone": "+61 412 345 678",
+      "password": "$2b$10$dNWmSqrF9vZWeUA/lU4zweho.OodnBRiefvRaLNuQ.QUxMYFJ87O2",
+      "role": "customer",
+      "createdAt": "2026-09-17T13:36:12.752Z",
+      "password_hash": "$2b$10$dNWmSqrF9vZWeUA/lU4zweho.OodnBRiefvRaLNuQ.QUxMYFJ87O2"
+    },
+    {
+      "id": "usr-mu70y8ws-487c",
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789739941206@example.com",
+      "phone": "0412345678",
+      "password": "$2b$10$rB2/4mfAxJTvG28lKdxcO.VQN8fpYk1V6rGpcfnygJACotdnZy10S",
+      "role": "customer",
+      "createdAt": "2026-09-18T13:59:01.276Z",
+      "password_hash": "$2b$10$rB2/4mfAxJTvG28lKdxcO.VQN8fpYk1V6rGpcfnygJACotdnZy10S"
+    },
+    {
+      "id": "usr-mu70yv08-7akc",
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789739969811@example.com",
+      "phone": "0412345678",
+      "password": "$2b$10$QljCZ5qH9BCALnimOlJdZeKoGgkP7sQVTRc/pI2BTeUkQRvaXBePG",
+      "role": "customer",
+      "createdAt": "2026-09-18T13:59:29.912Z",
+      "password_hash": "$2b$10$QljCZ5qH9BCALnimOlJdZeKoGgkP7sQVTRc/pI2BTeUkQRvaXBePG"
+    },
+    {
+      "id": "usr-mu71b6m4-t2rw",
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789740544749@example.com",
+      "phone": "0412345678",
+      "password": "$2b$10$c4ZBZPo6F5V7TI6e9RwzoeG73CYXmKaq1dJJddavtZfCeF1IenvFC",
+      "role": "customer",
+      "createdAt": "2026-09-18T14:09:04.828Z",
+      "password_hash": "$2b$10$c4ZBZPo6F5V7TI6e9RwzoeG73CYXmKaq1dJJddavtZfCeF1IenvFC"
+    },
+    {
+      "id": "usr-mu71z585-v1mz",
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789741662704@example.com",
+      "phone": "0412345678",
+      "password": "$2b$10$F/1Jh7GF5y/l5fh0f5LCxuGZ6gMDSpmlOe5qNDHQDcA357zCaIIOm",
+      "role": "customer",
+      "createdAt": "2026-09-18T14:27:42.773Z",
+      "password_hash": "$2b$10$F/1Jh7GF5y/l5fh0f5LCxuGZ6gMDSpmlOe5qNDHQDcA357zCaIIOm"
+    },
+    {
+      "id": "usr_3c1c8b34-5b35-44ab-ada9-6c57d8ad6ede",
+      "name": "Nizam Ali Khan",
+      "email": "nizam_1789742635504@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "password_hash": "$2b$10$GMCcLTYlE/o/m7H.XLcNme095TYrM7Vl1Gz1SKLxkCIeZbiF5zU3K",
+      "role": "customer",
+      "created_at": "2026-09-18T14:43:55.579Z",
+      "updated_at": "2026-09-18T14:43:55.579Z"
+    },
+    {
+      "id": "usr_0173dd4a-db7e-4c3c-8abb-05b8b14167eb",
+      "name": "Nizam Ali Khan",
+      "email": "nizam_1789742913637@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "password_hash": "$2b$10$ZaMrOXgBnEZgA6GmOeKDGuY00zlpkUsnnD8uiPSTQSgI9BT/BQX9G",
+      "role": "customer",
+      "created_at": "2026-09-18T14:48:33.719Z",
+      "updated_at": "2026-09-18T14:48:33.719Z"
+    },
+    {
+      "id": "usr_7cf04d9e-7e4b-4ec3-a17e-dc28ca154cf4",
+      "name": "Nizam Ali Khan",
+      "email": "nizam_1789743945397@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "password_hash": "$2b$10$qN2Z5efkiqVxBWZ9Z40I2OsXlkqr3UjfarVOkuS2ZtdsgSP1kn17S",
+      "role": "customer",
+      "created_at": "2026-09-18T15:05:45.464Z",
+      "updated_at": "2026-09-18T15:05:45.464Z"
+    },
+    {
+      "id": "usr_3ce72b4b-dc18-4cb2-9817-203891426807",
+      "name": "Nizam Ali Khan",
+      "email": "nizam_1789744014223@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "password_hash": "$2b$10$pKnTqDlZQ.yA0T02jxlCp.VuL1rUfwCz1YX24HoXAT9iwg0dlhwDm",
+      "role": "customer",
+      "created_at": "2026-09-18T15:06:54.310Z",
+      "updated_at": "2026-09-18T15:06:54.310Z"
+    },
+    {
+      "id": "usr_4a774360-bd56-4894-ad3d-7783a20b68fa",
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789744023265@example.com",
+      "phone": "0412345678",
+      "password_hash": "$2b$10$U5TKomt6QoE3980kU9wKdeJYxRm52YGp0HjFDokeJUzoHhmCPd9Be",
+      "role": "customer",
+      "created_at": "2026-09-18T15:07:03.342Z",
+      "updated_at": "2026-09-18T15:07:03.342Z"
+    },
+    {
+      "id": "usr_22e6c846-d5c5-43b1-969b-1e561c7b9afa",
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789744082675@example.com",
+      "phone": "0412345678",
+      "password_hash": "$2b$10$z/UG5RdqyD8MrwJSLfr/5uP9XpEItNgzysaPDafjxB5082ejLb2Ye",
+      "role": "customer",
+      "created_at": "2026-09-18T15:08:02.750Z",
+      "updated_at": "2026-09-18T15:08:02.750Z"
+    },
+    {
+      "id": "usr_b600c6ea-fda4-42af-9d13-4eae16ac87d3",
+      "firebase_uid": "firebase_user_1789745470205",
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789745470205@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "role": "customer",
+      "created_at": "2026-09-18T15:31:10.250Z",
+      "updated_at": "2026-09-18T15:31:10.380Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord_73c0b171-cccf-4b13-bae7-a63fe561f737",
+      "order_id": "ORD-811073",
+      "orderId": "ORD-811073",
+      "user_id": "usr_b600c6ea-fda4-42af-9d13-4eae16ac87d3",
+      "userId": "usr_b600c6ea-fda4-42af-9d13-4eae16ac87d3",
+      "firebase_uid": null,
+      "customer_name": "Nizam Ali Khan",
+      "customerName": "Nizam Ali Khan",
+      "email": "customer_1789745470205@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "address": "14 Walker St, Dandenong VIC 3175",
+      "items": [
+        {
+          "id": "biryani-1",
+          "name": "Hyderabadi Chicken Dum Biryani",
+          "price": 21.9,
+          "quantity": 2
+        }
+      ],
+      "total_amount": 43.8,
+      "totalAmount": 43.8,
+      "status": "pending",
+      "created_at": "2026-09-18T15:31:10.309Z",
+      "createdAt": "2026-09-18T15:31:10.309Z",
+      "updated_at": "2026-09-18T15:31:10.309Z"
+    },
+    {
+      "id": "ord_9108294f-bd6e-4397-931e-6f4b4437911c",
+      "order_id": "ORD-556499",
+      "orderId": "ORD-556499",
+      "user_id": "usr_22e6c846-d5c5-43b1-969b-1e561c7b9afa",
+      "userId": "usr_22e6c846-d5c5-43b1-969b-1e561c7b9afa",
+      "customer_name": "Amina Syed",
+      "customerName": "Amina Syed",
+      "email": "customer_1789744082675@example.com",
+      "phone": "+61 412 345 678",
+      "address": "14 Walker St, Dandenong VIC 3175",
+      "items": [
+        {
+          "id": "biryani-1",
+          "name": "Hyderabadi Dum Biryani (Chicken)",
+          "price": 16.99,
+          "quantity": 2
+        }
+      ],
+      "total_amount": 33.98,
+      "totalAmount": 33.98,
+      "status": "pending",
+      "created_at": "2026-09-18T15:08:02.939Z",
+      "createdAt": "2026-09-18T15:08:02.939Z",
+      "updated_at": "2026-09-18T15:08:02.939Z"
+    },
+    {
+      "id": "ord_87ce1b88-8b05-4b15-99ae-7ac2b40a9581",
+      "order_id": "ORD-131940",
+      "orderId": "ORD-131940",
+      "user_id": "usr_4a774360-bd56-4894-ad3d-7783a20b68fa",
+      "userId": "usr_4a774360-bd56-4894-ad3d-7783a20b68fa",
+      "customer_name": "Amina Syed",
+      "customerName": "Amina Syed",
+      "email": "customer_1789744023265@example.com",
+      "phone": "+61 412 345 678",
+      "address": "14 Walker St, Dandenong VIC 3175",
+      "items": [
+        {
+          "id": "biryani-1",
+          "name": "Hyderabadi Dum Biryani (Chicken)",
+          "price": 16.99,
+          "quantity": 2
+        }
+      ],
+      "total_amount": 33.98,
+      "totalAmount": 33.98,
+      "status": "pending",
+      "created_at": "2026-09-18T15:07:03.526Z",
+      "createdAt": "2026-09-18T15:07:03.526Z",
+      "updated_at": "2026-09-18T15:07:03.526Z"
+    },
+    {
+      "id": "ord_2a4bef98-a480-43d7-9e2a-bd723c93bffb",
+      "order_id": "ORD-477785",
+      "orderId": "ORD-477785",
+      "user_id": "usr_3ce72b4b-dc18-4cb2-9817-203891426807",
+      "userId": "usr_3ce72b4b-dc18-4cb2-9817-203891426807",
+      "customer_name": "Nizam Ali Khan",
+      "customerName": "Nizam Ali Khan",
+      "email": "nizam_1789744014223@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "address": "14 Walker St, Dandenong VIC 3175",
+      "items": [
+        {
+          "id": "biryani-1",
+          "name": "Hyderabadi Chicken Dum Biryani",
+          "price": 21.9,
+          "quantity": 2
+        },
+        {
+          "id": "curry-1",
+          "name": "Mirchi Ka Salan",
+          "price": 14.9,
+          "quantity": 1
+        }
+      ],
+      "total_amount": 58.7,
+      "totalAmount": 58.7,
+      "status": "pending",
+      "created_at": "2026-09-18T15:06:54.486Z",
+      "createdAt": "2026-09-18T15:06:54.486Z",
+      "updated_at": "2026-09-18T15:06:54.486Z"
+    },
+    {
+      "id": "ord_a2f697ef-cfc6-43b2-aa6a-57dc11f62977",
+      "order_id": "ORD-761772",
+      "orderId": "ORD-761772",
+      "user_id": "usr_7cf04d9e-7e4b-4ec3-a17e-dc28ca154cf4",
+      "userId": "usr_7cf04d9e-7e4b-4ec3-a17e-dc28ca154cf4",
+      "customer_name": "Nizam Ali Khan",
+      "customerName": "Nizam Ali Khan",
+      "email": "nizam_1789743945397@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "address": "14 Walker St, Dandenong VIC 3175",
+      "items": [
+        {
+          "id": "biryani-1",
+          "name": "Hyderabadi Chicken Dum Biryani",
+          "price": 21.9,
+          "quantity": 2
+        },
+        {
+          "id": "curry-1",
+          "name": "Mirchi Ka Salan",
+          "price": 14.9,
+          "quantity": 1
+        }
+      ],
+      "total_amount": 58.7,
+      "totalAmount": 58.7,
+      "status": "pending",
+      "created_at": "2026-09-18T15:05:45.637Z",
+      "createdAt": "2026-09-18T15:05:45.637Z",
+      "updated_at": "2026-09-18T15:05:45.637Z"
+    },
+    {
+      "id": "ord_56638015-f260-47d7-a57d-e3e6349dc11e",
+      "order_id": "ORD-429889",
+      "orderId": "ORD-429889",
+      "user_id": "usr_0173dd4a-db7e-4c3c-8abb-05b8b14167eb",
+      "userId": "usr_0173dd4a-db7e-4c3c-8abb-05b8b14167eb",
+      "customer_name": "Nizam Ali Khan",
+      "customerName": "Nizam Ali Khan",
+      "email": "nizam_1789742913637@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "address": "14 Walker St, Dandenong VIC 3175",
+      "items": [
+        {
+          "id": "biryani-1",
+          "name": "Hyderabadi Chicken Dum Biryani",
+          "price": 21.9,
+          "quantity": 2
+        },
+        {
+          "id": "curry-1",
+          "name": "Mirchi Ka Salan",
+          "price": 14.9,
+          "quantity": 1
+        }
+      ],
+      "total_amount": 58.7,
+      "totalAmount": 58.7,
+      "status": "pending",
+      "created_at": "2026-09-18T14:48:33.910Z",
+      "createdAt": "2026-09-18T14:48:33.910Z",
+      "updated_at": "2026-09-18T14:48:33.910Z"
+    },
+    {
+      "id": "ord-mu71z5cp",
+      "orderId": "ORD-MU71Z5CP-8BSP",
+      "userId": "usr-mu71z585-v1mz",
+      "customerName": "Amina Syed",
+      "phone": "+61 412 345 678",
+      "email": "customer_1789741662704@example.com",
+      "address": "14 Walker St, Dandenong VIC 3175",
+      "items": [
+        {
+          "id": "biryani-1",
+          "name": "Hyderabadi Dum Biryani (Chicken)",
+          "price": 16.99,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 33.98,
+      "status": "confirmed",
+      "createdAt": "2026-09-18T14:27:42.937Z"
+    },
+    {
+      "id": "ord-mu71b6sa",
+      "orderId": "ORD-MU71B6SA-OK3I",
+      "userId": null,
+      "customerName": "Amina Syed",
+      "phone": "+61 412 345 678",
+      "email": "amina@example.com",
+      "address": "14 Walker St, Dandenong VIC 3175",
+      "items": [
+        {
+          "id": "hyderabadi-chicken-dum-biryani",
+          "name": "Hyderabadi Chicken Dum Biryani",
+          "price": 21.9,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 43.8,
+      "status": "confirmed",
+      "createdAt": "2026-09-18T14:09:05.050Z"
+    },
+    {
+      "id": "ord-mu70yuuk",
+      "orderId": "ORD-MU70YUUK-OFKF",
+      "userId": null,
+      "customerName": "Amina Syed",
+      "phone": "+91 9876543210",
+      "email": "amina@example.com",
+      "address": "Road No 10, Jubilee Hills, Hyderabad",
+      "items": [
+        {
+          "id": "biryani-1",
+          "name": "Hyderabadi Dum Biryani (Chicken)",
+          "price": 16.99,
+          "quantity": 2
+        },
+        {
+          "id": "drinks-2",
+          "name": "Mango Lassi",
+          "price": 4.99,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 43.96,
+      "status": "confirmed",
+      "createdAt": "2026-09-18T13:59:29.708Z"
+    },
+    {
+      "id": "ord-mu70y8sa",
+      "orderId": "ORD-MU70Y8SA-U9U1",
+      "userId": null,
+      "customerName": "Amina Syed",
+      "phone": "+91 9876543210",
+      "email": "amina@example.com",
+      "address": "Road No 10, Jubilee Hills, Hyderabad",
+      "items": [
+        {
+          "id": "biryani-1",
+          "name": "Hyderabadi Dum Biryani (Chicken)",
+          "price": 16.99,
+          "quantity": 2
+        },
+        {
+          "id": "drinks-2",
+          "name": "Mango Lassi",
+          "price": 4.99,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 43.96,
+      "status": "confirmed",
+      "createdAt": "2026-09-18T13:59:01.114Z"
+    },
+    {
+      "id": "ord-mu5kp2dx",
+      "orderId": "ORD-MU5KP2DX-NHK0",
+      "userId": "usr-mu5kp2a8-yn21",
+      "customerName": "Nawaz Khan",
+      "phone": "+61 412 345 678",
+      "email": "testcustomer_1789652172386@darbar.test",
+      "address": "77 Royal Crescent, Dandenong VIC",
+      "items": [
+        {
+          "id": "dum-biryani",
+          "name": "Dum Biryani",
+          "price": 22,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 44,
+      "status": "confirmed",
+      "createdAt": "2026-09-17T13:36:12.885Z"
+    },
+    {
+      "id": "ord-seed-01",
+      "orderId": "ORD-DARBAR-101",
+      "userId": null,
+      "customerName": "Aarav Patel",
+      "email": "aarav@example.com",
+      "phone": "+61 412 345 678",
+      "address": "14 Walker St, Dandenong VIC 3175",
+      "items": [
+        {
+          "id": "hyderabadi-chicken-dum-biryani",
+          "name": "Hyderabadi Chicken Dum Biryani",
+          "price": 21.9,
+          "quantity": 2
+        },
+        {
+          "id": "mirchi-ka-salan",
+          "name": "Mirchi Ka Salan",
+          "price": 14.9,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 58.7,
+      "status": "delivered",
+      "createdAt": "2026-09-15T13:36:12.690Z"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "res_779e122e-df80-41f6-a685-5c1f703aa3c3",
+      "reservation_id": "RES-685634",
+      "reservationId": "RES-685634",
+      "user_id": "usr_b600c6ea-fda4-42af-9d13-4eae16ac87d3",
+      "userId": "usr_b600c6ea-fda4-42af-9d13-4eae16ac87d3",
+      "firebase_uid": null,
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789745470205@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "guests": 4,
+      "date": "2026-09-25",
+      "time": "19:30",
+      "message": "Window seating preferred",
+      "status": "pending",
+      "created_at": "2026-09-18T15:31:10.340Z",
+      "createdAt": "2026-09-18T15:31:10.340Z",
+      "updated_at": "2026-09-18T15:31:10.340Z"
+    },
+    {
+      "id": "res_89431bc1-101c-4530-95f7-de3334dc3cfe",
+      "reservation_id": "RES-499741",
+      "reservationId": "RES-499741",
+      "user_id": "usr_22e6c846-d5c5-43b1-969b-1e561c7b9afa",
+      "userId": "usr_22e6c846-d5c5-43b1-969b-1e561c7b9afa",
+      "name": "Dr. Vikram Rao",
+      "email": "customer_1789744082675@example.com",
+      "phone": "+61 412 345 678",
+      "guests": 4,
+      "date": "2026-09-20",
+      "time": "19:30",
+      "message": "Window seat preferred for anniversary dinner",
+      "status": "pending",
+      "created_at": "2026-09-18T15:08:02.984Z",
+      "createdAt": "2026-09-18T15:08:02.984Z",
+      "updated_at": "2026-09-18T15:08:02.984Z"
+    },
+    {
+      "id": "res_c77c310f-a174-4abe-b564-d5170beafbaf",
+      "reservation_id": "RES-764200",
+      "reservationId": "RES-764200",
+      "user_id": "usr_4a774360-bd56-4894-ad3d-7783a20b68fa",
+      "userId": "usr_4a774360-bd56-4894-ad3d-7783a20b68fa",
+      "name": "Dr. Vikram Rao",
+      "email": "customer_1789744023265@example.com",
+      "phone": "+61 412 345 678",
+      "guests": 4,
+      "date": "2026-09-20",
+      "time": "19:30",
+      "message": "Window seat preferred for anniversary dinner",
+      "status": "pending",
+      "created_at": "2026-09-18T15:07:03.560Z",
+      "createdAt": "2026-09-18T15:07:03.560Z",
+      "updated_at": "2026-09-18T15:07:03.560Z"
+    },
+    {
+      "id": "res_433ffa86-9064-4137-b194-70ae44a7ff7b",
+      "reservation_id": "RES-101971",
+      "reservationId": "RES-101971",
+      "user_id": "usr_3ce72b4b-dc18-4cb2-9817-203891426807",
+      "userId": "usr_3ce72b4b-dc18-4cb2-9817-203891426807",
+      "name": "Nizam Ali Khan",
+      "email": "nizam_1789744014223@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "guests": 4,
+      "date": "2026-09-25",
+      "time": "19:30",
+      "message": "Royal family celebration",
+      "status": "pending",
+      "created_at": "2026-09-18T15:06:54.524Z",
+      "createdAt": "2026-09-18T15:06:54.524Z",
+      "updated_at": "2026-09-18T15:06:54.524Z"
+    },
+    {
+      "id": "res_e5197aa7-7b0c-4b82-a889-47d03b900b40",
+      "reservation_id": "RES-419172",
+      "reservationId": "RES-419172",
+      "user_id": "usr_7cf04d9e-7e4b-4ec3-a17e-dc28ca154cf4",
+      "userId": "usr_7cf04d9e-7e4b-4ec3-a17e-dc28ca154cf4",
+      "name": "Nizam Ali Khan",
+      "email": "nizam_1789743945397@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "guests": 4,
+      "date": "2026-09-25",
+      "time": "19:30",
+      "message": "Royal family celebration",
+      "status": "pending",
+      "created_at": "2026-09-18T15:05:45.659Z",
+      "createdAt": "2026-09-18T15:05:45.659Z",
+      "updated_at": "2026-09-18T15:05:45.659Z"
+    },
+    {
+      "id": "res_81924911-bb70-4617-b3c0-b329499c00a9",
+      "reservation_id": "RES-162064",
+      "reservationId": "RES-162064",
+      "user_id": "usr_0173dd4a-db7e-4c3c-8abb-05b8b14167eb",
+      "userId": "usr_0173dd4a-db7e-4c3c-8abb-05b8b14167eb",
+      "name": "Nizam Ali Khan",
+      "email": "nizam_1789742913637@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "guests": 4,
+      "date": "2026-09-25",
+      "time": "19:30",
+      "message": "Royal family celebration",
+      "status": "pending",
+      "created_at": "2026-09-18T14:48:33.924Z",
+      "createdAt": "2026-09-18T14:48:33.924Z",
+      "updated_at": "2026-09-18T14:48:33.924Z"
+    },
+    {
+      "id": "res_502871ff-aeb9-4c56-94f4-8dddbd4c03bb",
+      "reservation_id": "RES-868469",
+      "reservationId": "RES-868469",
+      "user_id": "usr_3c1c8b34-5b35-44ab-ada9-6c57d8ad6ede",
+      "userId": "usr_3c1c8b34-5b35-44ab-ada9-6c57d8ad6ede",
+      "name": "Nizam Ali Khan",
+      "email": "nizam_1789742635504@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "guests": 4,
+      "date": "2026-09-25",
+      "time": "19:30",
+      "message": "Royal family celebration",
+      "status": "pending",
+      "created_at": "2026-09-18T14:43:55.785Z",
+      "createdAt": "2026-09-18T14:43:55.785Z",
+      "updated_at": "2026-09-18T14:43:55.785Z"
+    },
+    {
+      "id": "res-mu71z5do",
+      "reservationId": "RES-MU71Z5DO-GRD",
+      "userId": "usr-mu71z585-v1mz",
+      "name": "Dr. Vikram Rao",
+      "email": "customer_1789741662704@example.com",
+      "phone": "+61 412 345 678",
+      "guests": 4,
+      "date": "2026-09-20",
+      "time": "19:30",
+      "message": "Window seat preferred for anniversary dinner",
+      "status": "confirmed",
+      "createdAt": "2026-09-18T14:27:42.972Z"
+    },
+    {
+      "id": "res-mu71b6sy",
+      "reservationId": "RES-MU71B6SY-9LH",
+      "userId": null,
+      "name": "Dr. Vikram Rao",
+      "email": "",
+      "phone": "+61 412 345 678",
+      "guests": 4,
+      "date": "2026-09-20",
+      "time": "19:30",
+      "message": "Window seat preferred for anniversary dinner",
+      "status": "confirmed",
+      "createdAt": "2026-09-18T14:09:05.074Z"
+    },
+    {
+      "id": "res-mu70yuvc",
+      "reservationId": "RES-MU70YUVC-3ZE",
+      "userId": null,
+      "name": "Dr. Vikram Rao",
+      "email": "",
+      "phone": "+91 9123456780",
+      "guests": 4,
+      "date": "2026-09-20",
+      "time": "19:30",
+      "message": "Window seat preferred for anniversary dinner",
+      "status": "confirmed",
+      "createdAt": "2026-09-18T13:59:29.736Z"
+    },
+    {
+      "id": "res-mu70y8t2",
+      "reservationId": "RES-MU70Y8T2-319",
+      "userId": null,
+      "name": "Dr. Vikram Rao",
+      "email": "",
+      "phone": "+91 9123456780",
+      "guests": 4,
+      "date": "2026-09-20",
+      "time": "19:30",
+      "message": "Window seat preferred for anniversary dinner",
+      "status": "confirmed",
+      "createdAt": "2026-09-18T13:59:01.142Z"
+    },
+    {
+      "id": "res-mu5kp2e0",
+      "reservationId": "RES-MU5KP2E0-SU8",
+      "userId": "usr-mu5kp2a8-yn21",
+      "name": "Nawaz Khan",
+      "email": "testcustomer_1789652172386@darbar.test",
+      "phone": "+61 412 345 678",
+      "guests": 2,
+      "date": "2026-10-15",
+      "time": "20:00",
+      "message": "Quiet table please",
+      "status": "confirmed",
+      "createdAt": "2026-09-17T13:36:12.888Z"
+    },
+    {
+      "id": "res-seed-01",
+      "reservationId": "RES-DARBAR-201",
+      "userId": null,
+      "name": "Priya Sharma",
+      "email": "priya@example.com",
+      "phone": "+61 498 765 432",
+      "guests": 4,
+      "date": "2026-09-18",
+      "time": "19:30",
+      "message": "Window seating preferred, celebrating anniversary.",
+      "status": "confirmed",
+      "createdAt": "2026-09-16T13:36:12.690Z"
+    }
+  ],
+  "menuItems": [
+    {
+      "id": "biryani-1",
+      "name": "Hyderabadi Dum Biryani (Chicken)",
+      "category": "Biryani",
+      "description": "Authentic royal fragrant basmati rice slow-cooked on dum with marinated chicken, saffron, and aromatic spices.",
+      "price": 16.99,
+      "image": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": false
+    },
+    {
+      "id": "biryani-2",
+      "name": "Hyderabadi Mutton Dum Biryani",
+      "category": "Biryani",
+      "description": "Tender goat meat layered with aged basmati rice, caramelized onions, mint, and signature spices.",
+      "price": 18.99,
+      "image": "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": false
+    },
+    {
+      "id": "biryani-3",
+      "name": "Royal Veg Dum Biryani",
+      "category": "Biryani",
+      "description": "Fresh garden vegetables and cottage cheese layered with saffron-infused rice and herbs.",
+      "price": 14.49,
+      "image": "https://images.unsplash.com/photo-1642821373181-696a54913e93?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "biryani-4",
+      "name": "Egg Dum Biryani",
+      "category": "Biryani",
+      "description": "Boiled and spiced eggs embedded in savory basmati rice cooked to perfection.",
+      "price": 13.99,
+      "image": "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": false
+    },
+    {
+      "id": "starter-1",
+      "name": "Chicken 65",
+      "category": "Starters",
+      "description": "Crispy fried chicken chunks tossed in spicy yogurt, curry leaves, and green chilies.",
+      "price": 12.99,
+      "image": "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": false
+    },
+    {
+      "id": "starter-2",
+      "name": "Paneer Tikka Angaare",
+      "category": "Starters",
+      "description": "Marinated cubes of paneer, bell peppers, and onions grilled in a traditional tandoor.",
+      "price": 11.99,
+      "image": "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "starter-3",
+      "name": "Tandoori Chicken (Half/Full)",
+      "category": "Starters",
+      "description": "Classic bone-in chicken marinated in yogurt, Kashmiri red chili, and cooked in clay oven.",
+      "price": 13.99,
+      "image": "https://images.unsplash.com/photo-1628294895950-9805252327bc?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": false
+    },
+    {
+      "id": "starter-4",
+      "name": "Hyderabadi Veg Samosa (3 pcs)",
+      "category": "Starters",
+      "description": "Golden flaky pastry stuffed with seasoned potatoes, green peas, and served with mint & tamarind chutneys.",
+      "price": 6.99,
+      "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "curry-1",
+      "name": "Butter Chicken (Murgh Makhani)",
+      "category": "Curry",
+      "description": "Smoked shredded chicken cooked in a rich, velvety tomato butter and fenugreek gravy.",
+      "price": 15.99,
+      "image": "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": false
+    },
+    {
+      "id": "curry-2",
+      "name": "Hyderabadi Dum Ka Murgh",
+      "category": "Curry",
+      "description": "Slow-cooked chicken cooked with roasted almond and cashew nut paste and aromatic spices.",
+      "price": 16.49,
+      "image": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": false
+    },
+    {
+      "id": "curry-3",
+      "name": "Paneer Butter Masala",
+      "category": "Curry",
+      "description": "Cottage cheese simmered in a luscious tomato-cashew creamy gravy with aromatic spices.",
+      "price": 13.99,
+      "image": "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "curry-4",
+      "name": "Dal Makhani",
+      "category": "Curry",
+      "description": "Black lentils and kidney beans slow-cooked overnight with cream, butter, and mild spices.",
+      "price": 12.49,
+      "image": "https://images.unsplash.com/photo-1546833998-877b37c2e5c6?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "naan-1",
+      "name": "Butter Garlic Naan",
+      "category": "Naan",
+      "description": "Hand-stretched leavened tandoor flatbread brushed with garlic and clarified butter.",
+      "price": 3.99,
+      "image": "https://images.unsplash.com/photo-1626074353765-517a681e40be?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "naan-2",
+      "name": "Plain Tandoori Roti",
+      "category": "Naan",
+      "description": "Whole wheat traditional flatbread baked fresh in the clay tandoor oven.",
+      "price": 2.99,
+      "image": "https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "naan-3",
+      "name": "Cheese Chili Naan",
+      "category": "Naan",
+      "description": "Tandoori naan stuffed with mozzarella cheese, green chilies, and fresh cilantro.",
+      "price": 4.99,
+      "image": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "rice-1",
+      "name": "Jeera Basmati Rice",
+      "category": "Rice",
+      "description": "Fragrant basmati rice tempered with roasted cumin seeds and desi ghee.",
+      "price": 5.99,
+      "image": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "rice-2",
+      "name": "Saffron Bagara Rice",
+      "category": "Rice",
+      "description": "Traditional Hyderabadi seasoned rice cooked with whole spices, mint, and fried onions.",
+      "price": 6.99,
+      "image": "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "drinks-1",
+      "name": "Hyderabadi Irani Chai",
+      "category": "Drinks",
+      "description": "Famous slow-brewed strong milk tea infused with cardamom and condensed milk richness.",
+      "price": 3.49,
+      "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "drinks-2",
+      "name": "Mango Lassi",
+      "category": "Drinks",
+      "description": "Thick, creamy yogurt shake blended with sweet Alphonso mango pulp and cardamom.",
+      "price": 4.99,
+      "image": "https://images.unsplash.com/photo-1546173159-315724a31696?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "drinks-3",
+      "name": "Masala Chaas (Spiced Buttermilk)",
+      "category": "Drinks",
+      "description": "Refreshing churned buttermilk tempered with ginger, green chili, and roasted cumin.",
+      "price": 3.99,
+      "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "dessert-1",
+      "name": "Shahi Tukda (Double Ka Meetha)",
+      "category": "Desserts",
+      "description": "Royal Hyderabadi dessert of crispy fried bread soaked in saffron milk and topped with rabri & nuts.",
+      "price": 6.99,
+      "image": "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "dessert-2",
+      "name": "Gulab Jamun with Ice Cream",
+      "category": "Desserts",
+      "description": "Warm milk-solid dumplings soaked in rose sugar syrup served alongside rich vanilla ice cream.",
+      "price": 5.99,
+      "image": "https://images.unsplash.com/photo-1605197148560-63640243e8ea?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    },
+    {
+      "id": "dessert-3",
+      "name": "Qubani Ka Meetha",
+      "category": "Desserts",
+      "description": "Traditional stewed dried apricot compote served with fresh clotted cream.",
+      "price": 7.49,
+      "image": "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&auto=format&fit=crop&q=80",
+      "vegetarian": true
+    }
+  ],
+  "reviews": [
+    {
+      "id": "rev_ce268b2e-bcdf-44ad-b599-79162644d9f9",
+      "user_id": "usr_b600c6ea-fda4-42af-9d13-4eae16ac87d3",
+      "userId": "usr_b600c6ea-fda4-42af-9d13-4eae16ac87d3",
+      "firebase_uid": null,
+      "name": "Nizam Ali Khan",
+      "rating": 5,
+      "comment": "Authentic Hyderabadi flavours and great royal hospitality!",
+      "created_at": "2026-09-18T15:31:10.369Z",
+      "createdAt": "2026-09-18T15:31:10.369Z"
+    },
+    {
+      "id": "rev_44ba8d92-8222-4553-9573-bc53c6f871c1",
+      "user_id": "usr_22e6c846-d5c5-43b1-969b-1e561c7b9afa",
+      "userId": "usr_22e6c846-d5c5-43b1-969b-1e561c7b9afa",
+      "name": "Nizam Ali Khan",
+      "rating": 5,
+      "comment": "Authentic Hyderabadi flavor! The Mutton Dum Biryani was phenomenal.",
+      "created_at": "2026-09-18T15:08:03.030Z",
+      "createdAt": "2026-09-18T15:08:03.030Z"
+    },
+    {
+      "id": "rev_e1a8862c-288f-48df-bbb8-e4f22c63c911",
+      "user_id": "usr_4a774360-bd56-4894-ad3d-7783a20b68fa",
+      "userId": "usr_4a774360-bd56-4894-ad3d-7783a20b68fa",
+      "name": "Nizam Ali Khan",
+      "rating": 5,
+      "comment": "Authentic Hyderabadi flavor! The Mutton Dum Biryani was phenomenal.",
+      "created_at": "2026-09-18T15:07:03.620Z",
+      "createdAt": "2026-09-18T15:07:03.620Z"
+    },
+    {
+      "id": "rev_340dd01b-741a-4ac8-93c5-7c897bf929ad",
+      "user_id": "usr_3ce72b4b-dc18-4cb2-9817-203891426807",
+      "userId": "usr_3ce72b4b-dc18-4cb2-9817-203891426807",
+      "name": "Nizam Ali Khan",
+      "rating": 5,
+      "comment": "Exceptional Hyderabadi Biryani experience. Rich aromatics and authentic heritage hospitality!",
+      "created_at": "2026-09-18T15:06:54.545Z",
+      "createdAt": "2026-09-18T15:06:54.545Z"
+    },
+    {
+      "id": "rev_337df2d7-38af-4d01-ba20-c432b635c9d5",
+      "user_id": "usr_7cf04d9e-7e4b-4ec3-a17e-dc28ca154cf4",
+      "userId": "usr_7cf04d9e-7e4b-4ec3-a17e-dc28ca154cf4",
+      "name": "Nizam Ali Khan",
+      "rating": 5,
+      "comment": "Exceptional Hyderabadi Biryani experience. Rich aromatics and authentic heritage hospitality!",
+      "created_at": "2026-09-18T15:05:45.690Z",
+      "createdAt": "2026-09-18T15:05:45.690Z"
+    },
+    {
+      "id": "rev_6a5e3ff9-ca0b-4e7b-b75c-afcd0add6876",
+      "user_id": "usr_0173dd4a-db7e-4c3c-8abb-05b8b14167eb",
+      "userId": "usr_0173dd4a-db7e-4c3c-8abb-05b8b14167eb",
+      "name": "Nizam Ali Khan",
+      "rating": 5,
+      "comment": "Exceptional Hyderabadi Biryani experience. Rich aromatics and authentic heritage hospitality!",
+      "created_at": "2026-09-18T14:48:33.955Z",
+      "createdAt": "2026-09-18T14:48:33.955Z"
+    },
+    {
+      "id": "rev_adf52f97-01e9-4cd7-a7d7-44135f91aa3d",
+      "user_id": "usr_3c1c8b34-5b35-44ab-ada9-6c57d8ad6ede",
+      "userId": "usr_3c1c8b34-5b35-44ab-ada9-6c57d8ad6ede",
+      "name": "Nizam Ali Khan",
+      "rating": 5,
+      "comment": "Exceptional Hyderabadi Biryani experience. Rich aromatics and authentic heritage hospitality!",
+      "created_at": "2026-09-18T14:43:55.809Z",
+      "createdAt": "2026-09-18T14:43:55.809Z"
+    },
+    {
+      "id": "rev-mu71z5fd",
+      "userId": "usr-mu71z585-v1mz",
+      "name": "Nizam Ali Khan",
+      "rating": 5,
+      "comment": "Authentic Hyderabadi flavor! The Mutton Dum Biryani was phenomenal.",
+      "createdAt": "2026-09-18T14:27:43.033Z"
+    },
+    {
+      "id": "rev-mu71b6u2",
+      "userId": "usr-mu71b6m4-t2rw",
+      "name": "Nizam Ali Khan",
+      "rating": 5,
+      "comment": "Authentic Hyderabadi flavor! The Mutton Dum Biryani was phenomenal.",
+      "createdAt": "2026-09-18T14:09:05.114Z"
+    },
+    {
+      "id": "rev-1",
+      "userId": null,
+      "name": "Ayesha Khan",
+      "rating": 5,
+      "comment": "The Hyderabadi Dum Biryani here is hands down the best in the city. Tender meat and authentic flavours!",
+      "createdAt": "2026-09-14T13:36:12.690Z"
+    },
+    {
+      "id": "rev-2",
+      "userId": null,
+      "name": "Rahul Verma",
+      "rating": 5,
+      "comment": "Loved the Chicken 65 and Butter Garlic Naan. Excellent ambience and fast service.",
+      "createdAt": "2026-09-12T13:36:12.690Z"
+    },
+    {
+      "id": "rev-3",
+      "userId": null,
+      "name": "Sarah Jenkins",
+      "rating": 4,
+      "comment": "The Irani chai and Shahi Tukda are heavenly! Will definitely visit again with friends.",
+      "createdAt": "2026-09-09T13:36:12.690Z"
+    }
+  ],
+  "contactMessages": [
+    {
+      "id": "cnt-mu71z5fs",
+      "name": "Karan Sharma",
+      "email": "karan.sharma@example.com",
+      "phone": "+61 499 887 766",
+      "subject": "Catering Inquiry for 100 people",
+      "message": "We would like to book catering for our family wedding reception.",
+      "createdAt": "2026-09-18T14:27:43.048Z"
+    },
+    {
+      "id": "cnt-mu71b6uh",
+      "name": "Karan Sharma",
+      "email": "karan.sharma@example.com",
+      "phone": "+61 499 887 766",
+      "subject": "Catering Inquiry for 100 people",
+      "message": "We would like to book catering for our family wedding reception.",
+      "createdAt": "2026-09-18T14:09:05.129Z"
+    },
+    {
+      "id": "cnt-mu70yuwu",
+      "name": "Karan Sharma",
+      "email": "karan.sharma@example.com",
+      "phone": "+91 9988776655",
+      "subject": "Catering Inquiry for 100 people",
+      "message": "We would like to book catering for our family wedding reception on Nov 15th.",
+      "createdAt": "2026-09-18T13:59:29.790Z"
+    },
+    {
+      "id": "cnt-mu70y8uk",
+      "name": "Karan Sharma",
+      "email": "karan.sharma@example.com",
+      "phone": "+91 9988776655",
+      "subject": "Catering Inquiry for 100 people",
+      "message": "We would like to book catering for our family wedding reception on Nov 15th.",
+      "createdAt": "2026-09-18T13:59:01.196Z"
+    },
+    {
+      "id": "cnt-1",
+      "name": "Farhan Ali",
+      "email": "farhan@example.com",
+      "phone": "+61 400 111 222",
+      "subject": "Catering for 80 Guests",
+      "message": "Looking for royal Hyderabadi catering packages for a family celebration in November.",
+      "createdAt": "2026-09-17T01:36:12.690Z"
+    }
+  ],
+  "order_items": [
+    {
+      "id": "item_f155d180-40ec-4f92-adc9-f956bfae91e3",
+      "order_id": "ord_56638015-f260-47d7-a57d-e3e6349dc11e",
+      "menu_item_id": "biryani-1",
+      "name": "Hyderabadi Chicken Dum Biryani",
+      "price": 21.9,
+      "quantity": 2
+    },
+    {
+      "id": "item_2a5306bf-2aa2-4d80-a781-5084e5843ae8",
+      "order_id": "ord_56638015-f260-47d7-a57d-e3e6349dc11e",
+      "menu_item_id": "curry-1",
+      "name": "Mirchi Ka Salan",
+      "price": 14.9,
+      "quantity": 1
+    },
+    {
+      "id": "item_3d0acb46-d046-4100-913a-0b9dca8ee5f7",
+      "order_id": "ord_a2f697ef-cfc6-43b2-aa6a-57dc11f62977",
+      "menu_item_id": "biryani-1",
+      "name": "Hyderabadi Chicken Dum Biryani",
+      "price": 21.9,
+      "quantity": 2
+    },
+    {
+      "id": "item_a8e69213-0c45-44d8-b7dc-5112a65a7bf6",
+      "order_id": "ord_a2f697ef-cfc6-43b2-aa6a-57dc11f62977",
+      "menu_item_id": "curry-1",
+      "name": "Mirchi Ka Salan",
+      "price": 14.9,
+      "quantity": 1
+    },
+    {
+      "id": "item_ab78da22-8469-415a-99f7-ce1eaef061c9",
+      "order_id": "ord_2a4bef98-a480-43d7-9e2a-bd723c93bffb",
+      "menu_item_id": "biryani-1",
+      "name": "Hyderabadi Chicken Dum Biryani",
+      "price": 21.9,
+      "quantity": 2
+    },
+    {
+      "id": "item_4c2769be-bfaa-4c39-802b-0d6963dd92cb",
+      "order_id": "ord_2a4bef98-a480-43d7-9e2a-bd723c93bffb",
+      "menu_item_id": "curry-1",
+      "name": "Mirchi Ka Salan",
+      "price": 14.9,
+      "quantity": 1
+    },
+    {
+      "id": "item_cee4d1ee-33ea-42a0-8a54-57fa0d77dff6",
+      "order_id": "ord_87ce1b88-8b05-4b15-99ae-7ac2b40a9581",
+      "menu_item_id": "biryani-1",
+      "name": "Hyderabadi Dum Biryani (Chicken)",
+      "price": 16.99,
+      "quantity": 2
+    },
+    {
+      "id": "item_b42fcf2f-394e-4447-b264-88f42b07434e",
+      "order_id": "ord_9108294f-bd6e-4397-931e-6f4b4437911c",
+      "menu_item_id": "biryani-1",
+      "name": "Hyderabadi Dum Biryani (Chicken)",
+      "price": 16.99,
+      "quantity": 2
+    },
+    {
+      "id": "item_003334ce-9cc5-44b8-ac26-998c50ee2e47",
+      "order_id": "ord_73c0b171-cccf-4b13-bae7-a63fe561f737",
+      "menu_item_id": "biryani-1",
+      "name": "Hyderabadi Chicken Dum Biryani",
+      "price": 21.9,
+      "quantity": 2
+    }
+  ],
+  "contact_messages": [
+    {
+      "id": "msg_012e6b3a-f851-4ab5-aa05-275466c70d78",
+      "name": "Karan Sharma",
+      "email": "karan.sharma@example.com",
+      "phone": "+61 499 887 766",
+      "subject": "Catering Inquiry for 100 people",
+      "message": "We would like to book catering for our family wedding reception.",
+      "created_at": "2026-09-18T15:08:03.052Z",
+      "createdAt": "2026-09-18T15:08:03.052Z"
+    },
+    {
+      "id": "msg_d5f7e55d-c841-440b-b33f-ba8949ee86b1",
+      "name": "Karan Sharma",
+      "email": "karan.sharma@example.com",
+      "phone": "+61 499 887 766",
+      "subject": "Catering Inquiry for 100 people",
+      "message": "We would like to book catering for our family wedding reception.",
+      "created_at": "2026-09-18T15:07:03.625Z",
+      "createdAt": "2026-09-18T15:07:03.625Z"
+    }
+  ]
+}
