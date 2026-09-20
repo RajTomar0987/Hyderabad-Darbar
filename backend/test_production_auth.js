@@ -336,7 +336,7 @@ const tests = async () => {
   let adminToken = null;
   await test('16. POST /api/admin/login — Admin Authenticates Against Real Users Table', async () => {
     const payload = {
-      email: 'admin@hyderabaddarbar.com',
+      email: 'yuvrajsinghtomar0987@gmail.com',
       password: 'change_this_password'
     };
     const res = await fetch(`${baseUrl}/api/admin/login`, {
@@ -359,7 +359,7 @@ const tests = async () => {
 
   await test('16b. POST /api/admin/login — Admin Invalid Password Returns 401', async () => {
     const payload = {
-      email: 'admin@hyderabaddarbar.com',
+      email: 'yuvrajsinghtomar0987@gmail.com',
       password: 'WrongAdminPassword!'
     };
     const res = await fetch(`${baseUrl}/api/admin/login`, {

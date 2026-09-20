@@ -314,7 +314,7 @@ const tests = async () => {
   let adminToken = null;
   await test('POST /api/admin/login (Valid Credentials)', async () => {
     const payload = {
-      email: 'admin@hyderabaddarbar.com',
+      email: 'yuvrajsinghtomar0987@gmail.com',
       password: 'change_this_password'
     };
     const res = await fetch(`${baseUrl}/api/admin/login`, {
@@ -331,7 +331,7 @@ const tests = async () => {
 
   await test('POST /api/admin/login (Invalid Credentials)', async () => {
     const payload = {
-      email: 'admin@hyderabaddarbar.com',
+      email: 'yuvrajsinghtomar0987@gmail.com',
       password: 'wrongpassword'
     };
     const res = await fetch(`${baseUrl}/api/admin/login`, {

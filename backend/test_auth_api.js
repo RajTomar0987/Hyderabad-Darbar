@@ -193,7 +193,7 @@ async function runTests() {
       headers: { 'Content-Type': 'application/json' }
     },
     {
-      email: 'admin@hyderabaddarbar.com',
+      email: 'yuvrajsinghtomar0987@gmail.com',
       password: 'change_this_password'
     }
   );

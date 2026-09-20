@@ -1,5 +1,4 @@
-/**
- * Script to assign Firebase Custom Claim { "admin": true } to admin@hyderabaddarbar.com
+ * Script to assign Firebase Custom Claim { "admin": true } to yuvrajsinghtomar0987@gmail.com
  * using the Firebase Admin SDK.
  * 
  * Usage:
@@ -10,7 +9,7 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const { setAdminCustomClaimByEmail } = require('../src/config/firebase');
 
-const targetEmail = process.argv[2] || process.env.ADMIN_EMAIL || 'admin@hyderabaddarbar.com';
+const targetEmail = process.argv[2] || process.env.ADMIN_EMAIL || 'yuvrajsinghtomar0987@gmail.com';
 
 async function main() {
   console.log('====================================================');

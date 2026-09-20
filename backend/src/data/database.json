@@ -2,15 +2,15 @@
   "users": [
     {
       "id": "usr-admin-01",
-      "name": "Darbar Administrator",
-      "email": "admin@hyderabaddarbar.com",
+      "name": "Yuvraj Singh Tomar",
+      "email": "yuvrajsinghtomar0987@gmail.com",
       "phone": "+61 3 9791 0000",
       "password": "$2b$10$YePwNxLmlT3eIAmWZE2zuOGqJ5vyO76pg4m8nEdowHb.gsq3PGBFS",
       "role": "admin",
       "createdAt": "2026-09-17T13:36:12.690Z",
       "password_hash": "$2b$10$YePwNxLmlT3eIAmWZE2zuOGqJ5vyO76pg4m8nEdowHb.gsq3PGBFS",
-      "firebase_uid": "firebase_admin_1789745470209",
-      "updated_at": "2026-09-18T15:31:10.426Z"
+      "firebase_uid": "claim_admin_uid_999",
+      "updated_at": "2026-09-20T05:29:10.697Z"
     },
     {
       "id": "usr-mu5kp2a8-yn21",
@@ -131,9 +131,125 @@
       "role": "customer",
       "created_at": "2026-09-18T15:31:10.250Z",
       "updated_at": "2026-09-18T15:31:10.380Z"
+    },
+    {
+      "id": "usr_a4f8b35a-2252-48a7-b3b4-870d720135cb",
+      "firebase_uid": "firebase_user_1789882132093",
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789882132093@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "role": "customer",
+      "created_at": "2026-09-20T05:28:52.116Z",
+      "updated_at": "2026-09-20T05:28:52.258Z"
+    },
+    {
+      "id": "usr_5ddee4b4-b3ee-4c58-9a86-3f1dacb6e9f1",
+      "firebase_uid": "firebase_user_1789882150404",
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789882150404@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "role": "customer",
+      "created_at": "2026-09-20T05:29:10.443Z",
+      "updated_at": "2026-09-20T05:29:10.626Z"
+    },
+    {
+      "id": "usr_3e263ea0-8ca2-46fe-994f-af40bdf762da",
+      "firebase_uid": "regular_uid_888",
+      "name": "Regular Customer",
+      "email": "regularuser@example.com",
+      "phone": "",
+      "role": "customer",
+      "created_at": "2026-09-20T05:29:10.712Z",
+      "updated_at": "2026-09-20T05:29:10.712Z"
     }
   ],
   "orders": [
+    {
+      "id": "ord_736d7b88-3cb8-4889-b6b2-35a1e5a2e653",
+      "order_id": "ORD-724435",
+      "orderId": "ORD-724435",
+      "user_id": "usr_5ddee4b4-b3ee-4c58-9a86-3f1dacb6e9f1",
+      "userId": "usr_5ddee4b4-b3ee-4c58-9a86-3f1dacb6e9f1",
+      "firebase_uid": "firebase_user_1789882150404",
+      "firebaseUid": "firebase_user_1789882150404",
+      "customer_name": "Nizam Ali Khan",
+      "customerName": "Nizam Ali Khan",
+      "email": "customer_1789882150404@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "order_type": "pickup",
+      "orderType": "pickup",
+      "address": "52D Foster Street, Dandenong VIC 3175 (Store Pickup)",
+      "pickup_time": "ASAP (20–30 mins)",
+      "pickupTime": "ASAP (20–30 mins)",
+      "delivery_instructions": "",
+      "deliveryInstructions": "",
+      "items": [
+        {
+          "id": "biryani-1",
+          "menu_item_id": "biryani-1",
+          "menuItemId": "biryani-1",
+          "name": "Hyderabadi Dum Biryani (Chicken)",
+          "price": 16.99,
+          "quantity": 2,
+          "subtotal": 33.98
+        }
+      ],
+      "subtotal": 33.98,
+      "delivery_fee": 0,
+      "deliveryFee": 0,
+      "total_amount": 33.98,
+      "totalAmount": 33.98,
+      "status": "pending",
+      "payment_status": "unpaid",
+      "paymentStatus": "unpaid",
+      "created_at": "2026-09-20T05:29:10.541Z",
+      "createdAt": "2026-09-20T05:29:10.541Z",
+      "updated_at": "2026-09-20T05:29:10.541Z",
+      "updatedAt": "2026-09-20T05:29:10.541Z"
+    },
+    {
+      "id": "ord_cbbb11a8-e895-4d63-b41c-b97371083a4b",
+      "order_id": "ORD-607944",
+      "orderId": "ORD-607944",
+      "user_id": "usr_a4f8b35a-2252-48a7-b3b4-870d720135cb",
+      "userId": "usr_a4f8b35a-2252-48a7-b3b4-870d720135cb",
+      "firebase_uid": "firebase_user_1789882132093",
+      "firebaseUid": "firebase_user_1789882132093",
+      "customer_name": "Nizam Ali Khan",
+      "customerName": "Nizam Ali Khan",
+      "email": "customer_1789882132093@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "order_type": "pickup",
+      "orderType": "pickup",
+      "address": "52D Foster Street, Dandenong VIC 3175 (Store Pickup)",
+      "pickup_time": "ASAP (20–30 mins)",
+      "pickupTime": "ASAP (20–30 mins)",
+      "delivery_instructions": "",
+      "deliveryInstructions": "",
+      "items": [
+        {
+          "id": "biryani-1",
+          "menu_item_id": "biryani-1",
+          "menuItemId": "biryani-1",
+          "name": "Hyderabadi Dum Biryani (Chicken)",
+          "price": 16.99,
+          "quantity": 2,
+          "subtotal": 33.98
+        }
+      ],
+      "subtotal": 33.98,
+      "delivery_fee": 0,
+      "deliveryFee": 0,
+      "total_amount": 33.98,
+      "totalAmount": 33.98,
+      "status": "pending",
+      "payment_status": "unpaid",
+      "paymentStatus": "unpaid",
+      "created_at": "2026-09-20T05:28:52.186Z",
+      "createdAt": "2026-09-20T05:28:52.186Z",
+      "updated_at": "2026-09-20T05:28:52.186Z",
+      "updatedAt": "2026-09-20T05:28:52.186Z"
+    },
     {
       "id": "ord_73c0b171-cccf-4b13-bae7-a63fe561f737",
       "order_id": "ORD-811073",
@@ -449,6 +565,63 @@
     }
   ],
   "reservations": [
+    {
+      "id": "res_2e55609d-27db-424e-8bb8-46df66b17e4c",
+      "reservation_id": "RES-213663",
+      "reservationId": "RES-213663",
+      "user_id": "usr_5ddee4b4-b3ee-4c58-9a86-3f1dacb6e9f1",
+      "userId": "usr_5ddee4b4-b3ee-4c58-9a86-3f1dacb6e9f1",
+      "firebase_uid": null,
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789882150404@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "guests": 4,
+      "date": "2026-09-25",
+      "time": "19:30",
+      "message": "Window seating preferred",
+      "status": "pending",
+      "created_at": "2026-09-20T05:29:10.577Z",
+      "createdAt": "2026-09-20T05:29:10.577Z",
+      "updated_at": "2026-09-20T05:29:10.577Z"
+    },
+    {
+      "id": "res_6bf6c130-e80c-4b68-9a00-7132046f96ba",
+      "reservation_id": "RES-445400",
+      "reservationId": "RES-445400",
+      "user_id": "usr_a4f8b35a-2252-48a7-b3b4-870d720135cb",
+      "userId": "usr_a4f8b35a-2252-48a7-b3b4-870d720135cb",
+      "firebase_uid": null,
+      "name": "Nizam Ali Khan",
+      "email": "customer_1789882132093@hyderabaddarbar.com",
+      "phone": "+61 412 345 678",
+      "guests": 4,
+      "date": "2026-09-25",
+      "time": "19:30",
+      "message": "Window seating preferred",
+      "status": "pending",
+      "created_at": "2026-09-20T05:28:52.218Z",
+      "createdAt": "2026-09-20T05:28:52.218Z",
+      "updated_at": "2026-09-20T05:28:52.218Z"
+    },
+    {
+      "id": "res_d298bd60-4579-4d5e-9775-9c1f46b1d1a7",
+      "reservation_id": "RES-422337",
+      "reservationId": "RES-422337",
+      "user_id": null,
+      "userId": null,
+      "firebase_uid": null,
+      "name": "Nawaz Khan",
+      "email": "testcustomer_1789882073615@darbar.test",
+      "phone": "+61 412 345 678",
+      "guests": 2,
+      "date": "2026-10-15",
+      "time": "20:00",
+      "message": "Quiet table please",
+      "status": "pending",
+      "created_at": "2026-09-20T05:27:53.924Z",
+      "createdAt": "2026-09-20T05:27:53.924Z",
+      "updated_at": "2026-09-20T05:27:53.924Z"
+    },
     {
       "id": "res_779e122e-df80-41f6-a685-5c1f703aa3c3",
       "reservation_id": "RES-685634",
@@ -872,6 +1045,28 @@
   ],
   "reviews": [
     {
+      "id": "rev_459521d3-1361-4c0b-9585-12bfc6b7093d",
+      "user_id": "usr_5ddee4b4-b3ee-4c58-9a86-3f1dacb6e9f1",
+      "userId": "usr_5ddee4b4-b3ee-4c58-9a86-3f1dacb6e9f1",
+      "firebase_uid": null,
+      "name": "Nizam Ali Khan",
+      "rating": 5,
+      "comment": "Authentic Hyderabadi flavours and great royal hospitality!",
+      "created_at": "2026-09-20T05:29:10.605Z",
+      "createdAt": "2026-09-20T05:29:10.605Z"
+    },
+    {
+      "id": "rev_e3299f5d-6c91-465f-8931-3fe317b1945c",
+      "user_id": "usr_a4f8b35a-2252-48a7-b3b4-870d720135cb",
+      "userId": "usr_a4f8b35a-2252-48a7-b3b4-870d720135cb",
+      "firebase_uid": null,
+      "name": "Nizam Ali Khan",
+      "rating": 5,
+      "comment": "Authentic Hyderabadi flavours and great royal hospitality!",
+      "created_at": "2026-09-20T05:28:52.244Z",
+      "createdAt": "2026-09-20T05:28:52.244Z"
+    },
+    {
       "id": "rev_ce268b2e-bcdf-44ad-b599-79162644d9f9",
       "user_id": "usr_b600c6ea-fda4-42af-9d13-4eae16ac87d3",
       "userId": "usr_b600c6ea-fda4-42af-9d13-4eae16ac87d3",
@@ -1101,6 +1296,22 @@
       "menu_item_id": "biryani-1",
       "name": "Hyderabadi Chicken Dum Biryani",
       "price": 21.9,
+      "quantity": 2
+    },
+    {
+      "id": "item_b2c95f73-3350-4785-a062-f1ce397b22e0",
+      "order_id": "ord_cbbb11a8-e895-4d63-b41c-b97371083a4b",
+      "menu_item_id": "biryani-1",
+      "name": "Hyderabadi Dum Biryani (Chicken)",
+      "price": 16.99,
+      "quantity": 2
+    },
+    {
+      "id": "item_9caeaf1a-e292-4a23-911c-211017dbd61a",
+      "order_id": "ord_736d7b88-3cb8-4889-b6b2-35a1e5a2e653",
+      "menu_item_id": "biryani-1",
+      "name": "Hyderabadi Dum Biryani (Chicken)",
+      "price": 16.99,
       "quantity": 2
     }
   ],

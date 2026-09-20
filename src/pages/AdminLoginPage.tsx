@@ -92,7 +92,7 @@ export default function AdminLoginPage() {
                     setEmail(e.target.value);
                     if (error) setError(null);
                   }}
-                  placeholder="admin@hyderabaddarbar.com"
+                  placeholder="yuvrajsinghtomar0987@gmail.com"
                   required
                   className="w-full pl-10 pr-4 py-3 bg-ink-950 border border-ink-700 rounded-xl text-cream-50 placeholder-cream-200/30 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition text-sm"
                 />

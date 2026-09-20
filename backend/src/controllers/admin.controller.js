@@ -26,7 +26,7 @@ const login = async (req, res) => {
     }
 
     const { email } = req.body;
-    const adminEmail = (config.admin.email || 'admin@hyderabaddarbar.com').toLowerCase();
+    const adminEmail = (config.admin.email || 'yuvrajsinghtomar0987@gmail.com').toLowerCase();
 
     if (!email || email.trim().toLowerCase() !== adminEmail) {
       return res.status(401).json({

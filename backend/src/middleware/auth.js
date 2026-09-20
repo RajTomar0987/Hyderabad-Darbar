@@ -47,7 +47,7 @@ const requireAuth = async (req, res, next) => {
 
     // Check Firebase Custom Claims on decoded token:
     const hasAdminClaim = decoded.admin === true || decoded.role === 'admin';
-    const adminEmail = (config.admin.email || 'admin@hyderabaddarbar.com').toLowerCase().trim();
+    const adminEmail = (config.admin.email || 'yuvrajsinghtomar0987@gmail.com').toLowerCase().trim();
     const isConfiguredAdmin = email && email === adminEmail;
 
     // Auto-set custom claim if configured admin email logs in without it
@@ -128,7 +128,7 @@ const optionalAuth = async (req, res, next) => {
         const uid = decoded.uid || decoded.user_id || decoded.id;
         const email = (decoded.email || '').toLowerCase().trim();
         const hasAdminClaim = decoded.admin === true || decoded.role === 'admin';
-        const adminEmail = (config.admin.email || 'admin@hyderabaddarbar.com').toLowerCase().trim();
+        const adminEmail = (config.admin.email || 'yuvrajsinghtomar0987@gmail.com').toLowerCase().trim();
         const role = (hasAdminClaim || email === adminEmail) ? 'admin' : null;
 
         const user = await db.syncFirebaseUser({

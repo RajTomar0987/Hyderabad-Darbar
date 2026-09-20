@@ -14,7 +14,7 @@ const getApiBaseUrl = (): string => {
   if (import.meta.env.DEV) {
     return 'http://localhost:5000/api';
   }
-  return '';
+  return 'https://hyderabad-darbar.onrender.com/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();

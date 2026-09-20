@@ -32,7 +32,7 @@ if (process.env.DATABASE_URL) {
 
 // In-file persistent database state helper
 const getInitialState = () => {
-  const adminEmail = (config.admin.email || 'admin@hyderabaddarbar.com').toLowerCase();
+  const adminEmail = (config.admin.email || 'yuvrajsinghtomar0987@gmail.com').toLowerCase();
 
   return {
     users: [
@@ -164,7 +164,7 @@ const initDb = async () => {
         }
 
         // Check if default admin exists
-        const adminEmail = (config.admin.email || 'admin@hyderabaddarbar.com').toLowerCase();
+        const adminEmail = (config.admin.email || 'yuvrajsinghtomar0987@gmail.com').toLowerCase();
         const res = await client.query('SELECT * FROM users WHERE email = $1', [adminEmail]);
         if (res.rows.length === 0) {
           const adminId = 'usr-admin-' + crypto.randomBytes(4).toString('hex');
@@ -186,7 +186,7 @@ const initDb = async () => {
 
   // Ensure local DB has admin
   const local = readLocalDb();
-  const adminEmail = (config.admin.email || 'admin@hyderabaddarbar.com').toLowerCase();
+  const adminEmail = (config.admin.email || 'yuvrajsinghtomar0987@gmail.com').toLowerCase();
   const existingAdmin = local.users.find(u => u.email.toLowerCase() === adminEmail);
   if (!existingAdmin) {
     local.users.push({
@@ -250,7 +250,7 @@ const db = {
   async syncFirebaseUser({ firebase_uid, name, email, phone = '', role = null }) {
     const normalizedEmail = email ? email.trim().toLowerCase() : '';
     const now = new Date().toISOString();
-    const adminEmail = (config.admin.email || 'admin@hyderabaddarbar.com').toLowerCase();
+    const adminEmail = (config.admin.email || 'yuvrajsinghtomar0987@gmail.com').toLowerCase();
 
     // Determine role (protect admin role)
     const effectiveRole = role || (normalizedEmail === adminEmail ? 'admin' : 'customer');

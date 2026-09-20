@@ -1,11 +1,12 @@
-// ==========================================================
-// Firebase Authentication & Backend API Test Suite
-// ==========================================================
-
+process.env.NODE_ENV = 'test';
 const jwt = require('jsonwebtoken');
 const config = require('./src/config');
+const app = require('./src/server');
+const http = require('http');
 
 const tests = async () => {
+  const server = http.createServer(app);
+  await new Promise((resolve) => server.listen(5000, resolve));
   const baseUrl = 'http://localhost:5000';
   let passed = 0;
   let failed = 0;
@@ -53,7 +54,7 @@ const tests = async () => {
   );
 
   const adminFirebaseUid = `firebase_admin_${Date.now()}`;
-  const adminEmail = (config.admin.email || 'admin@hyderabaddarbar.com').toLowerCase();
+  const adminEmail = (config.admin.email || 'yuvrajsinghtomar0987@gmail.com').toLowerCase();
   const adminToken = jwt.sign(
     {
       uid: adminFirebaseUid,
@@ -286,12 +287,64 @@ const tests = async () => {
     }
   });
 
+  // 16. Firebase ID Token with { admin: true } Custom Claim explicitly grants access
+  const tokenWithAdminClaim = jwt.sign(
+    {
+      uid: 'claim_admin_uid_999',
+      email: 'yuvrajsinghtomar0987@gmail.com',
+      name: 'Yuvraj Singh Tomar',
+      admin: true
+    },
+    config.jwtSecret,
+    { expiresIn: '1h' }
+  );
+
+  await test('15. GET /api/admin/me — Firebase Token with { admin: true } Custom Claim Grants Admin Access', async () => {
+    const res = await fetch(`${baseUrl}/api/admin/me`, {
+      headers: {
+        'Authorization': `Bearer ${tokenWithAdminClaim}`
+      }
+    });
+    const data = await res.json();
+    if (res.status !== 200 || data.success !== true || data.data?.user?.role !== 'admin') {
+      throw new Error(`Expected admin user with custom claim, got: ${JSON.stringify(data)}`);
+    }
+  });
+
+  // 17. Token without { admin: true } Custom Claim is strictly rejected (403 Forbidden)
+  const regularUserToken = jwt.sign(
+    {
+      uid: 'regular_uid_888',
+      email: 'regularuser@example.com',
+      name: 'Regular Customer',
+      admin: false
+    },
+    config.jwtSecret,
+    { expiresIn: '1h' }
+  );
+
+  await test('16. GET /api/admin/me — Non-admin Token Rejected with 403 Forbidden', async () => {
+    const res = await fetch(`${baseUrl}/api/admin/me`, {
+      headers: {
+        'Authorization': `Bearer ${regularUserToken}`
+      }
+    });
+    const data = await res.json();
+    if (res.status !== 403 || data.success !== false) {
+      throw new Error(`Expected 403 Forbidden for non-admin token, got: ${res.status}`);
+    }
+  });
+
   console.log('\n====================================================');
   console.log(` Summary: ${passed} passed, ${failed} failed`);
   console.log('====================================================\n');
 
+  server.close();
+
   if (failed > 0) {
     process.exit(1);
+  } else {
+    process.exit(0);
   }
 };
 
