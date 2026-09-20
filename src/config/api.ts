@@ -1,6 +1,23 @@
 import { auth } from './firebase';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+/**
+ * Central API Base URL Configuration
+ * 
+ * - In production (Vercel): Reads directly from import.meta.env.VITE_API_URL (e.g., https://<your-render-app>.onrender.com/api)
+ * - In local development: Defaults to http://localhost:5000/api if VITE_API_URL is unset
+ */
+const getApiBaseUrl = (): string => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim() !== '') {
+    return envUrl.trim();
+  }
+  if (import.meta.env.DEV) {
+    return 'http://localhost:5000/api';
+  }
+  return '';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export interface User {
   id: string;
@@ -143,11 +160,19 @@ export async function apiRequest<T = any>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
+  const baseUrl = API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : '');
+
+  if (!baseUrl && !endpoint.startsWith('http://') && !endpoint.startsWith('https://')) {
+    throw new Error(
+      'Backend API URL is not configured. Please set the VITE_API_URL environment variable in your Vercel project settings.'
+    );
+  }
+
   let url: string;
   if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
     url = endpoint;
   } else {
-    const cleanBase = API_BASE_URL.replace(/\/+$/, '');
+    const cleanBase = baseUrl.replace(/\/+$/, '');
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
     if (cleanBase.endsWith('/api') && cleanEndpoint.startsWith('/api/')) {
       url = `${cleanBase}${cleanEndpoint.slice(4)}`;
@@ -175,14 +200,20 @@ export async function apiRequest<T = any>(
 
     return data;
   } catch (err: any) {
-    if (err instanceof TypeError && err.message.includes('fetch')) {
-      throw new Error('Unable to connect to backend server. Please ensure backend is running on port 5000.');
+    if (
+      err instanceof TypeError && 
+      (err.message.includes('fetch') || err.message.includes('NetworkError') || err.message.includes('Failed to fetch'))
+    ) {
+      if (import.meta.env.DEV) {
+        throw new Error('Unable to connect to local backend server (http://localhost:5000). Please ensure your local Express backend is running.');
+      }
+      throw new Error('Unable to connect to the backend server. Please ensure the Render live backend service is running and accessible.');
     }
     throw err;
   }
 }
 
-// Convenient API methods
+// Central API helper methods
 export const api = {
   // Auth APIs
   auth: {
