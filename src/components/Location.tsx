@@ -1,4 +1,5 @@
 import { Clock, MapPin, Navigation, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 import { SITE } from "../site";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
@@ -62,14 +63,12 @@ export default function Location() {
               </div>
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={SITE.orderUrl}
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                to="/order"
                 className="flex-1 rounded-full bg-gold-500 px-6 py-3.5 text-center text-[13px] font-extrabold uppercase tracking-[0.16em] text-ink-950 transition hover:bg-gold-300"
               >
                 Order Online
-              </a>
+              </Link>
               <a
                 href={SITE.phoneHref}
                 className="flex-1 rounded-full border border-white/20 px-6 py-3.5 text-center text-[13px] font-extrabold uppercase tracking-[0.16em] transition hover:border-gold-400 hover:text-gold-300"

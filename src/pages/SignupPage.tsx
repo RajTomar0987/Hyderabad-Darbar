@@ -22,9 +22,11 @@ export default function SignupPage() {
   const [success, setSuccess] = useState<string | null>(null);
 
   // If already logged in, offer quick redirect
-  if (isAuthenticated) {
-    navigate('/account', { replace: true });
-  }
+  React.useEffect(() => {
+    if (isAuthenticated && !loading && !success) {
+      navigate('/account', { replace: true });
+    }
+  }, [isAuthenticated, loading, success, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -70,15 +72,10 @@ export default function SignupPage() {
         password: formData.password
       });
 
-      setSuccess('Account created successfully! Redirecting you to login...');
+      setSuccess('Account created successfully! Welcome to Hyderabad Darbar.');
       setTimeout(() => {
-        navigate('/login', {
-          state: {
-            successMessage: 'Account created successfully! Please log in with your credentials.',
-            email: formData.email
-          }
-        });
-      }, 1500);
+        navigate('/account', { replace: true });
+      }, 1000);
     } catch (err: any) {
       setError(err.message || 'Signup failed. Please try again.');
     } finally {

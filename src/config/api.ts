@@ -7,6 +7,7 @@ export interface User {
   uid?: string;
   firebase_uid?: string;
   name: string;
+  displayName?: string;
   email: string;
   phone?: string;
   role: 'customer' | 'admin';
@@ -133,7 +134,20 @@ export async function apiRequest<T = any>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`;
+  let url: string;
+  if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
+    url = endpoint;
+  } else {
+    const cleanBase = API_BASE_URL.replace(/\/+$/, '');
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    if (cleanBase.endsWith('/api') && cleanEndpoint.startsWith('/api/')) {
+      url = `${cleanBase}${cleanEndpoint.slice(4)}`;
+    } else if (cleanBase.endsWith('/api') && cleanEndpoint === '/api') {
+      url = cleanBase;
+    } else {
+      url = `${cleanBase}${cleanEndpoint}`;
+    }
+  }
 
   try {
     const res = await fetch(url, {

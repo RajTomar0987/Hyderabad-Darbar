@@ -346,35 +346,76 @@ const db = {
   },
 
   // ================= ORDERS =================
-  async createOrder({ userId = null, firebaseUid = null, customerName, email, phone, address, items, totalAmount }) {
+  async createOrder({ 
+    userId = null, 
+    firebaseUid = null, 
+    customerName, 
+    email, 
+    phone, 
+    orderType = 'pickup',
+    address, 
+    pickupTime = '',
+    deliveryInstructions = '',
+    items = [], 
+    subtotal = 0,
+    deliveryFee = 0,
+    totalAmount = 0 
+  }) {
     const id = 'ord_' + crypto.randomUUID();
     const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
     const now = new Date().toISOString();
+
+    const normalizedItems = (items || []).map(item => ({
+      id: item.id || item.menuItemId || 'custom',
+      menu_item_id: item.menuItemId || item.id || 'custom',
+      menuItemId: item.menuItemId || item.id || 'custom',
+      name: item.name,
+      price: Number(item.price),
+      quantity: Number(item.quantity) || 1,
+      subtotal: Number(item.subtotal || (Number(item.price) * (Number(item.quantity) || 1)).toFixed(2))
+    }));
 
     if (usePostgres && pgPool) {
       const client = await pgPool.connect();
       try {
         await client.query('BEGIN');
         const orderRes = await client.query(
-          `INSERT INTO orders (id, order_id, user_id, firebase_uid, customer_name, email, phone, address, total_amount, status, created_at, updated_at)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'pending', $10, $11)
+          `INSERT INTO orders (
+            id, order_id, user_id, firebase_uid, customer_name, email, phone, 
+            order_type, address, pickup_time, delivery_instructions, subtotal, delivery_fee, 
+            total_amount, status, payment_status, created_at, updated_at
+           )
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, 'pending', 'unpaid', $15, $16)
            RETURNING *`,
-          [id, orderId, userId, firebaseUid, customerName, email, phone, address, totalAmount, now, now]
+          [
+            id, orderId, userId, firebaseUid, customerName, email, phone,
+            orderType, address, pickupTime, deliveryInstructions, subtotal, deliveryFee,
+            totalAmount, now, now
+          ]
         );
 
-        if (Array.isArray(items)) {
-          for (const item of items) {
-            const itemId = 'item_' + crypto.randomUUID();
-            await client.query(
-              `INSERT INTO order_items (id, order_id, menu_item_id, name, price, quantity)
-               VALUES ($1, $2, $3, $4, $5, $6)`,
-              [itemId, id, item.id || 'custom', item.name, item.price, item.quantity || 1]
-            );
-          }
+        for (const item of normalizedItems) {
+          const itemId = 'item_' + crypto.randomUUID();
+          await client.query(
+            `INSERT INTO order_items (id, order_id, menu_item_id, name, price, quantity)
+             VALUES ($1, $2, $3, $4, $5, $6)`,
+            [itemId, id, item.menuItemId, item.name, item.price, item.quantity]
+          );
         }
         await client.query('COMMIT');
         const order = orderRes.rows[0];
-        order.items = items;
+        order.items = normalizedItems;
+        order.orderId = order.order_id;
+        order.customerName = order.customer_name;
+        order.orderType = order.order_type;
+        order.pickupTime = order.pickup_time;
+        order.deliveryInstructions = order.delivery_instructions;
+        order.subtotal = Number(order.subtotal);
+        order.deliveryFee = Number(order.delivery_fee);
+        order.totalAmount = Number(order.total_amount);
+        order.paymentStatus = order.payment_status;
+        order.createdAt = order.created_at;
+        order.updatedAt = order.updated_at;
         return order;
       } catch (err) {
         await client.query('ROLLBACK');
@@ -392,33 +433,44 @@ const db = {
       user_id: userId,
       userId,
       firebase_uid: firebaseUid,
+      firebaseUid,
       customer_name: customerName,
       customerName,
       email,
       phone,
+      order_type: orderType,
+      orderType,
       address,
-      items: items || [],
+      pickup_time: pickupTime,
+      pickupTime,
+      delivery_instructions: deliveryInstructions,
+      deliveryInstructions,
+      items: normalizedItems,
+      subtotal: Number(subtotal),
+      delivery_fee: Number(deliveryFee),
+      deliveryFee: Number(deliveryFee),
       total_amount: Number(totalAmount),
       totalAmount: Number(totalAmount),
       status: 'pending',
+      payment_status: 'unpaid',
+      paymentStatus: 'unpaid',
       created_at: now,
       createdAt: now,
-      updated_at: now
+      updated_at: now,
+      updatedAt: now
     };
     local.orders.unshift(newOrder);
 
-    if (Array.isArray(items)) {
-      items.forEach(item => {
-        local.order_items.push({
-          id: 'item_' + crypto.randomUUID(),
-          order_id: id,
-          menu_item_id: item.id || 'custom',
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity || 1
-        });
+    normalizedItems.forEach(item => {
+      local.order_items.push({
+        id: 'item_' + crypto.randomUUID(),
+        order_id: id,
+        menu_item_id: item.menuItemId,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity
       });
-    }
+    });
 
     writeLocalDb(local);
     return newOrder;
@@ -433,45 +485,173 @@ const db = {
           ...order,
           orderId: order.order_id,
           customerName: order.customer_name,
+          orderType: order.order_type || 'pickup',
+          pickupTime: order.pickup_time || '',
+          deliveryInstructions: order.delivery_instructions || '',
+          subtotal: Number(order.subtotal || order.total_amount),
+          deliveryFee: Number(order.delivery_fee || 0),
           totalAmount: Number(order.total_amount),
+          paymentStatus: order.payment_status || 'unpaid',
           userId: order.user_id,
+          firebaseUid: order.firebase_uid,
           createdAt: order.created_at,
-          items: itemsRes.rows.filter(item => item.order_id === order.id)
+          updatedAt: order.updated_at,
+          items: itemsRes.rows
+            .filter(item => item.order_id === order.id)
+            .map(item => ({
+              ...item,
+              menuItemId: item.menu_item_id,
+              subtotal: Number((Number(item.price) * Number(item.quantity)).toFixed(2))
+            }))
         }));
       } catch (err) {
         console.warn('[DB] PostgreSQL getOrders failed:', err.message);
       }
     }
     const local = readLocalDb();
-    return local.orders || [];
+    return (local.orders || []).map(order => ({
+      ...order,
+      orderId: order.order_id || order.orderId,
+      customerName: order.customer_name || order.customerName,
+      orderType: order.order_type || order.orderType || 'pickup',
+      pickupTime: order.pickup_time || order.pickupTime || '',
+      deliveryInstructions: order.delivery_instructions || order.deliveryInstructions || '',
+      subtotal: Number(order.subtotal || order.total_amount || order.totalAmount || 0),
+      deliveryFee: Number(order.delivery_fee || order.deliveryFee || 0),
+      totalAmount: Number(order.total_amount || order.totalAmount || 0),
+      paymentStatus: order.payment_status || order.paymentStatus || 'unpaid',
+      userId: order.user_id || order.userId,
+      firebaseUid: order.firebase_uid || order.firebaseUid,
+      createdAt: order.created_at || order.createdAt,
+      updatedAt: order.updated_at || order.updatedAt,
+      items: order.items || []
+    }));
   },
 
-  async getMyOrders(userId, firebaseUid = null) {
+  async getMyOrders(userId, firebaseUid = null, email = null) {
     if (usePostgres && pgPool) {
       try {
         const ordersRes = await pgPool.query(
-          'SELECT * FROM orders WHERE user_id = $1 OR ($2::text IS NOT NULL AND firebase_uid = $2) ORDER BY created_at DESC',
-          [userId, firebaseUid]
+          `SELECT * FROM orders 
+           WHERE user_id = $1 
+              OR ($2::text IS NOT NULL AND firebase_uid = $2)
+              OR ($3::text IS NOT NULL AND LOWER(email) = LOWER($3))
+           ORDER BY created_at DESC`,
+          [userId, firebaseUid, email]
         );
         const itemsRes = await pgPool.query('SELECT * FROM order_items');
         return ordersRes.rows.map(order => ({
           ...order,
           orderId: order.order_id,
           customerName: order.customer_name,
+          orderType: order.order_type || 'pickup',
+          pickupTime: order.pickup_time || '',
+          deliveryInstructions: order.delivery_instructions || '',
+          subtotal: Number(order.subtotal || order.total_amount),
+          deliveryFee: Number(order.delivery_fee || 0),
           totalAmount: Number(order.total_amount),
+          paymentStatus: order.payment_status || 'unpaid',
           userId: order.user_id,
+          firebaseUid: order.firebase_uid,
           createdAt: order.created_at,
-          items: itemsRes.rows.filter(item => item.order_id === order.id)
+          updatedAt: order.updated_at,
+          items: itemsRes.rows
+            .filter(item => item.order_id === order.id)
+            .map(item => ({
+              ...item,
+              menuItemId: item.menu_item_id,
+              subtotal: Number((Number(item.price) * Number(item.quantity)).toFixed(2))
+            }))
         }));
       } catch (err) {
         console.warn('[DB] PostgreSQL getMyOrders failed:', err.message);
       }
     }
     const local = readLocalDb();
-    return (local.orders || []).filter(o => 
-      (userId && (o.user_id === userId || o.userId === userId)) ||
-      (firebaseUid && (o.firebase_uid === firebaseUid || o.firebaseUid === firebaseUid))
-    );
+    const normalizedEmail = email ? email.toLowerCase() : null;
+    return (local.orders || [])
+      .filter(o => 
+        (userId && (o.user_id === userId || o.userId === userId)) ||
+        (firebaseUid && (o.firebase_uid === firebaseUid || o.firebaseUid === firebaseUid)) ||
+        (normalizedEmail && o.email && o.email.toLowerCase() === normalizedEmail)
+      )
+      .map(order => ({
+        ...order,
+        orderId: order.order_id || order.orderId,
+        customerName: order.customer_name || order.customerName,
+        orderType: order.order_type || order.orderType || 'pickup',
+        pickupTime: order.pickup_time || order.pickupTime || '',
+        deliveryInstructions: order.delivery_instructions || order.deliveryInstructions || '',
+        subtotal: Number(order.subtotal || order.total_amount || order.totalAmount || 0),
+        deliveryFee: Number(order.delivery_fee || order.deliveryFee || 0),
+        totalAmount: Number(order.total_amount || order.totalAmount || 0),
+        paymentStatus: order.payment_status || order.paymentStatus || 'unpaid',
+        userId: order.user_id || order.userId,
+        firebaseUid: order.firebase_uid || order.firebaseUid,
+        createdAt: order.created_at || order.createdAt,
+        updatedAt: order.updated_at || order.updatedAt,
+        items: order.items || []
+      }));
+  },
+
+  async getOrderById(id) {
+    if (usePostgres && pgPool) {
+      try {
+        const orderRes = await pgPool.query(
+          'SELECT * FROM orders WHERE id = $1 OR order_id = $1 LIMIT 1',
+          [id]
+        );
+        if (!orderRes.rows[0]) return null;
+        const order = orderRes.rows[0];
+        const itemsRes = await pgPool.query(
+          'SELECT * FROM order_items WHERE order_id = $1',
+          [order.id]
+        );
+        return {
+          ...order,
+          orderId: order.order_id,
+          customerName: order.customer_name,
+          orderType: order.order_type || 'pickup',
+          pickupTime: order.pickup_time || '',
+          deliveryInstructions: order.delivery_instructions || '',
+          subtotal: Number(order.subtotal || order.total_amount),
+          deliveryFee: Number(order.delivery_fee || 0),
+          totalAmount: Number(order.total_amount),
+          paymentStatus: order.payment_status || 'unpaid',
+          userId: order.user_id,
+          firebaseUid: order.firebase_uid,
+          createdAt: order.created_at,
+          updatedAt: order.updated_at,
+          items: itemsRes.rows.map(item => ({
+            ...item,
+            menuItemId: item.menu_item_id,
+            subtotal: Number((Number(item.price) * Number(item.quantity)).toFixed(2))
+          }))
+        };
+      } catch (err) {
+        console.warn('[DB] PostgreSQL getOrderById failed:', err.message);
+      }
+    }
+    const local = readLocalDb();
+    const order = (local.orders || []).find(o => o.id === id || o.orderId === id || o.order_id === id);
+    if (!order) return null;
+    return {
+      ...order,
+      orderId: order.order_id || order.orderId,
+      customerName: order.customer_name || order.customerName,
+      orderType: order.order_type || order.orderType || 'pickup',
+      pickupTime: order.pickup_time || order.pickupTime || '',
+      deliveryInstructions: order.delivery_instructions || order.deliveryInstructions || '',
+      subtotal: Number(order.subtotal || order.total_amount || order.totalAmount || 0),
+      deliveryFee: Number(order.delivery_fee || order.deliveryFee || 0),
+      totalAmount: Number(order.total_amount || order.totalAmount || 0),
+      paymentStatus: order.payment_status || order.paymentStatus || 'unpaid',
+      userId: order.user_id || order.userId,
+      firebaseUid: order.firebase_uid || order.firebaseUid,
+      createdAt: order.created_at || order.createdAt,
+      updatedAt: order.updated_at || order.updatedAt,
+      items: order.items || []
+    };
   },
 
   async updateOrderStatus(id, status) {
@@ -479,10 +659,15 @@ const db = {
     if (usePostgres && pgPool) {
       try {
         const res = await pgPool.query(
-          'UPDATE orders SET status = $1, updated_at = $2 WHERE id = $3 RETURNING *',
+          'UPDATE orders SET status = $1, updated_at = $2 WHERE id = $3 OR order_id = $3 RETURNING *',
           [status, now, id]
         );
-        return res.rows[0] || null;
+        if (res.rows[0]) {
+          const order = res.rows[0];
+          order.orderId = order.order_id;
+          order.status = status;
+          return order;
+        }
       } catch (err) {
         console.warn('[DB] PostgreSQL updateOrderStatus failed:', err.message);
       }
@@ -492,6 +677,7 @@ const db = {
     if (order) {
       order.status = status;
       order.updated_at = now;
+      order.updatedAt = now;
       writeLocalDb(local);
       return order;
     }

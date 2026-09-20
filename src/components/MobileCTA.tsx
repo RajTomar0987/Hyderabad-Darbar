@@ -1,4 +1,5 @@
 import { Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 import { SITE } from "../site";
 
 export default function MobileCTA() {
@@ -10,14 +11,12 @@ export default function MobileCTA() {
       >
         <Phone size={15} aria-hidden="true" /> Call
       </a>
-      <a
-        href={SITE.orderUrl}
-        target="_blank"
-        rel="noreferrer"
+      <Link
+        to="/order"
         className="flex items-center justify-center rounded-full bg-gold-500 py-3.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-950"
       >
         Order Online
-      </a>
+      </Link>
     </div>
   );
 }

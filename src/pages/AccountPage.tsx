@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   User, Mail, Phone, Calendar, ShoppingBag, LogOut, Clock, 
   MapPin, CheckCircle2, AlertCircle, Plus, Star, UtensilsCrossed, RefreshCw 
@@ -9,7 +9,10 @@ import { api, type Order, type Reservation } from '../config/api';
 
 export default function AccountPage() {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, firebaseUser, logout } = useAuth();
+
+  const displayName = user?.displayName || firebaseUser?.displayName || (user?.name && user.name !== 'Customer' ? user.name : '');
+  const greetingName = displayName || 'Valued Guest';
 
   const [activeTab, setActiveTab] = useState<'orders' | 'reservations' | 'review'>('orders');
   const [orders, setOrders] = useState<Order[]>([]);
@@ -70,13 +73,13 @@ export default function AccountPage() {
 
   const handleBookReservation = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user && !firebaseUser) return;
     setSubmittingResv(true);
     try {
       const res = await api.reservations.create({
-        name: user.name,
-        email: user.email,
-        phone: user.phone || '0400000000',
+        name: displayName || 'Valued Guest',
+        email: user?.email || firebaseUser?.email || '',
+        phone: user?.phone || firebaseUser?.phoneNumber || '0400000000',
         guests: Number(resvForm.guests),
         date: resvForm.date,
         time: resvForm.time,
@@ -100,14 +103,14 @@ export default function AccountPage() {
 
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user && !firebaseUser) return;
     setSubmittingReview(true);
     setReviewError(null);
     setReviewSuccess(null);
 
     try {
       const res = await api.reviews.create({
-        name: user.name,
+        name: displayName || 'Valued Guest',
         rating: Number(reviewForm.rating),
         comment: reviewForm.comment
       });
@@ -133,12 +136,12 @@ export default function AccountPage() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
             <div className="flex items-center gap-5">
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-ink-950 font-bold text-2xl sm:text-3xl shadow-[0_4px_20px_rgba(200,162,75,0.4)]">
-                {user?.name ? user.name.charAt(0).toUpperCase() : 'C'}
+                {greetingName.charAt(0).toUpperCase()}
               </div>
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="font-display text-2xl sm:text-3xl text-cream-50 font-bold">
-                    {user?.name || 'Valued Guest'}
+                    {greetingName}
                   </h1>
                   <span className="px-2.5 py-0.5 rounded-full bg-gold-500/20 text-gold-300 border border-gold-500/30 text-[11px] font-semibold uppercase tracking-wider">
                     Member
@@ -148,12 +151,12 @@ export default function AccountPage() {
                 <div className="flex flex-wrap items-center gap-4 mt-2 text-xs sm:text-sm text-cream-200/70">
                   <span className="flex items-center gap-1.5">
                     <Mail size={14} className="text-gold-400" />
-                    {user?.email}
+                    {user?.email || firebaseUser?.email}
                   </span>
-                  {user?.phone && (
+                  {(user?.phone || firebaseUser?.phoneNumber) && (
                     <span className="flex items-center gap-1.5">
                       <Phone size={14} className="text-gold-400" />
-                      {user.phone}
+                      {user?.phone || firebaseUser?.phoneNumber}
                     </span>
                   )}
                 </div>
@@ -260,14 +263,12 @@ export default function AccountPage() {
                 <p className="text-xs text-cream-200/60 max-w-sm mx-auto mb-6">
                   You haven't placed any online orders yet. Experience authentic Hyderabadi Dum Biryani and charcoal delicacies.
                 </p>
-                <a
-                  href="https://hyderabad-darbar.nextorder.com/"
-                  target="_blank"
-                  rel="noreferrer"
+                <Link
+                  to="/order"
                   className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gold-500 text-ink-950 text-xs font-extrabold uppercase tracking-wider hover:bg-gold-400 transition"
                 >
                   Order Now Online
-                </a>
+                </Link>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

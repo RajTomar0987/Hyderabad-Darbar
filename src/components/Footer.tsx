@@ -25,14 +25,12 @@ export default function Footer() {
               Dum biryanis, slow curries and tandoor fresh from the clay oven — served with
               Hyderabadi hospitality in the heart of Dandenong.
             </p>
-            <a
-              href={SITE.orderUrl}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              to="/order"
               className="mt-6 inline-block rounded-full bg-gold-500 px-6 py-3 text-[13px] font-extrabold uppercase tracking-[0.16em] text-ink-950 transition hover:bg-gold-300"
             >
               Order Online
-            </a>
+            </Link>
           </div>
 
           <nav aria-label="Footer">
@@ -104,10 +102,9 @@ export default function Footer() {
         <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-[13px] text-cream-50/50 sm:flex-row">
           <p>© {new Date().getFullYear()} Hyderabad Darbar. All rights reserved.</p>
           <p>
-            Order via{" "}
-            <a href={SITE.orderUrl} target="_blank" rel="noreferrer" className="underline hover:text-gold-300">
-              NextOrder
-            </a>{" "}
+            <Link to="/order" className="underline hover:text-gold-300">
+              Order Online
+            </Link>{" "}
             · Dandenong, Melbourne
           </p>
         </div>

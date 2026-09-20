@@ -1,7 +1,6 @@
 import { ArrowRight, Flame, Leaf } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FEATURED_IDS, MENU, formatPrice } from "../data/menu";
-import { SITE } from "../site";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 
@@ -66,15 +65,13 @@ export default function FeaturedDishes() {
                       )}
                       <Spice level={d.spicy} />
                     </span>
-                    <a
-                      href={SITE.orderUrl}
-                      target="_blank"
-                      rel="noreferrer"
+                    <Link
+                      to="/order"
                       aria-label={`Order ${d.name} online`}
                       className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-gold-600 underline-offset-4 hover:underline"
                     >
                       Order +
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </article>

@@ -16,6 +16,7 @@ import GalleryPage from "./pages/GalleryPage";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import MenuPage from "./pages/MenuPage";
+import OrderPage from "./pages/OrderPage";
 import SignupPage from "./pages/SignupPage";
 
 function ScrollToTop() {
@@ -52,6 +53,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<main id="main"><Home /></main>} />
             <Route path="/menu" element={<MenuPage />} />
+            <Route path="/order" element={<OrderPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/catering" element={<CateringPage />} />

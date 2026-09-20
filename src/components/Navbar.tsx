@@ -150,14 +150,12 @@ export default function Navbar() {
               </Link>
             )}
 
-            <a
-              href={SITE.orderUrl}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              to="/order"
               className="inline-flex items-center justify-center rounded-full bg-gold-500 px-5 py-2.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-950 transition hover:bg-gold-300 active:scale-[0.98]"
             >
               Order Online
-            </a>
+            </Link>
           </div>
 
           <button
@@ -248,14 +246,13 @@ export default function Navbar() {
               </motion.div>
             </nav>
             <div className="space-y-3 p-6">
-              <a
-                href={SITE.orderUrl}
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                to="/order"
+                onClick={() => setOpen(false)}
                 className="block rounded-full bg-gold-500 py-4 text-center text-sm font-extrabold uppercase tracking-[0.18em] text-ink-950"
               >
                 Order Online
-              </a>
+              </Link>
               <a
                 href={SITE.phoneHref}
                 className="block rounded-full border border-white/20 py-4 text-center text-sm font-bold uppercase tracking-[0.18em] text-cream-50"

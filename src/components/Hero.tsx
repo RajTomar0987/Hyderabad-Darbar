@@ -87,14 +87,12 @@ export default function Hero() {
             Explore Menu
             <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" aria-hidden="true" />
           </Link>
-          <a
-            href={SITE.orderUrl}
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            to="/order"
             className="inline-flex items-center gap-2 rounded-full bg-gold-500 px-7 py-3.5 text-[13px] font-extrabold uppercase tracking-[0.16em] text-ink-950 transition hover:bg-gold-300"
           >
             Order Online
-          </a>
+          </Link>
           <a
             href={SITE.mapsUrl}
             target="_blank"

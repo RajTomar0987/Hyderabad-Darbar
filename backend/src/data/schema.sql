@@ -27,9 +27,15 @@ CREATE TABLE IF NOT EXISTS orders (
     customer_name VARCHAR(255) NOT NULL,
     email VARCHAR(255),
     phone VARCHAR(50) NOT NULL,
+    order_type VARCHAR(20) NOT NULL DEFAULT 'pickup' CHECK (order_type IN ('pickup', 'delivery')),
     address TEXT NOT NULL,
+    pickup_time VARCHAR(100),
+    delivery_instructions TEXT,
+    subtotal NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
+    delivery_fee NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
     total_amount NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
-    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'preparing', 'delivered', 'cancelled')),
+    status VARCHAR(30) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'preparing', 'ready', 'out_for_delivery', 'completed', 'cancelled')),
+    payment_status VARCHAR(20) NOT NULL DEFAULT 'unpaid' CHECK (payment_status IN ('unpaid', 'paid', 'refunded')),
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

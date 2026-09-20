@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Flame, Leaf, Search, Utensils, X } from "lucide-react";
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { CATEGORIES, MENU, formatPrice, type MenuCategory } from "../data/menu";
-import { SITE } from "../site";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 
@@ -201,14 +201,12 @@ export default function MenuSection({ compact = false }: { compact?: boolean }) 
                           </span>
                         ) : null}
                       </span>
-                      <a
-                        href={SITE.orderUrl}
-                        target="_blank"
-                        rel="noreferrer"
+                      <Link
+                        to="/order"
                         className="rounded-full border border-gold-500/40 px-3.5 py-1 text-[11px] font-extrabold uppercase tracking-[0.16em] text-gold-300 transition group-hover:bg-gold-500 group-hover:text-ink-950"
                       >
                         Add +
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </motion.article>

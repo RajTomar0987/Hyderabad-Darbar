@@ -53,7 +53,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const res = await api.auth.getMe();
       if (res.success && res.data?.user) {
         const u = res.data.user;
-        setUser(u);
+        const resolvedName = fbUser.displayName || (u.name && u.name !== 'Customer' ? u.name : '') || '';
+        const userObj: User = {
+          ...u,
+          name: resolvedName,
+          displayName: fbUser.displayName || (u.displayName && u.displayName !== 'Customer' ? u.displayName : '') || resolvedName
+        };
+        setUser(userObj);
         setRole(u.role);
         localStorage.setItem(ROLE_KEY, u.role);
       } else {
@@ -61,7 +67,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const fallbackUser: User = {
           id: fbUser.uid,
           uid: fbUser.uid,
-          name: fbUser.displayName || 'Customer',
+          name: fbUser.displayName || '',
+          displayName: fbUser.displayName || '',
           email: fbUser.email || '',
           phone: fbUser.phoneNumber || '',
           role: 'customer'
@@ -72,6 +79,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (err) {
       console.warn('[AuthContext] Backend profile sync failed:', err);
+      const fallbackUser: User = {
+        id: fbUser.uid,
+        uid: fbUser.uid,
+        name: fbUser.displayName || '',
+        displayName: fbUser.displayName || '',
+        email: fbUser.email || '',
+        phone: fbUser.phoneNumber || '',
+        role: 'customer'
+      };
+      setUser(fallbackUser);
     }
   };
 
@@ -99,34 +116,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Customer Signup with Firebase Auth
   const signup = async (data: { name: string; email: string; phone: string; password: string }) => {
     try {
+      const trimmedName = data.name.trim();
+      const trimmedEmail = data.email.trim();
+      const trimmedPhone = data.phone.trim();
+
       // 1. Create Firebase Auth user
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        data.email.trim(),
+        trimmedEmail,
         data.password
       );
 
-      // 2. Update Display Name in Firebase
-      if (data.name.trim()) {
+      // 2. Update Display Name in Firebase Auth immediately
+      if (trimmedName) {
         await updateProfile(userCredential.user, {
-          displayName: data.name.trim()
+          displayName: trimmedName
         });
+        // Reload Firebase user to refresh local profile state
+        await userCredential.user.reload();
       }
 
+      // Update active firebaseUser state
+      const activeUser = auth.currentUser || userCredential.user;
+      setFirebaseUser(activeUser);
+
       // 3. Sync profile with backend
-      const idToken = await userCredential.user.getIdToken();
+      const idToken = await activeUser.getIdToken(true);
+      setToken(idToken);
       localStorage.setItem(TOKEN_KEY, idToken);
       
       try {
         await api.auth.syncProfile({
-          name: data.name.trim(),
-          phone: data.phone.trim()
+          name: trimmedName,
+          phone: trimmedPhone
         });
       } catch (syncErr) {
         console.warn('[AuthContext] Profile sync notice:', syncErr);
       }
 
-      await fetchBackendUser(userCredential.user);
+      await fetchBackendUser(activeUser);
     } catch (error: any) {
       let message = error.message || 'Registration failed';
       if (error.code === 'auth/email-already-in-use') {
@@ -212,6 +240,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const refreshUser = async () => {
     if (auth.currentUser) {
       await auth.currentUser.reload();
+      setFirebaseUser(auth.currentUser);
       await fetchBackendUser(auth.currentUser);
     }
   };

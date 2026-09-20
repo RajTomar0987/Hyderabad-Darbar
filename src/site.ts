@@ -9,7 +9,7 @@ export const SITE = {
     { days: "Mon – Thu", time: "11:00 AM – 10:00 PM" },
     { days: "Fri – Sun", time: "11:00 AM – 10:30 PM" },
   ],
-  orderUrl: "https://hyderabad-darbar.nextorder.com/",
+  orderUrl: "/order",
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=52D+Foster+Street+Dandenong+VIC+3175",
   instagram: "https://instagram.com/",
   facebook: "https://facebook.com/",
