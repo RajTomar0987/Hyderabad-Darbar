@@ -196,7 +196,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const adminLogin = async (email: string, password: string) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password);
-      const idToken = await userCredential.user.getIdToken();
+      const idToken = await userCredential.user.getIdToken(true);
       localStorage.setItem(TOKEN_KEY, idToken);
 
       // Verify admin role with backend
@@ -204,6 +204,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!res.success || res.data?.user?.role !== 'admin') {
         // Sign out if not an admin
         await signOut(auth);
+        setUser(null);
+        setRole(null);
+        setToken(null);
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(ROLE_KEY);
+        sessionStorage.removeItem(TOKEN_KEY);
+        sessionStorage.removeItem(ROLE_KEY);
         throw new Error('Access denied: You do not have administrative privileges.');
       }
 
@@ -212,8 +219,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem(ROLE_KEY, 'admin');
     } catch (error: any) {
       let message = error.message || 'Administrative authentication failed.';
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+      if (
+        error.code === 'auth/user-not-found' ||
+        error.code === 'auth/wrong-password' ||
+        error.code === 'auth/invalid-credential' ||
+        error.code === 'auth/invalid-login-credentials'
+      ) {
         message = 'Invalid administrative email or password.';
+      } else if (error.code === 'auth/too-many-requests') {
+        message = 'Access temporarily disabled due to multiple failed login attempts. Please try again later.';
       }
       throw new Error(message);
     }

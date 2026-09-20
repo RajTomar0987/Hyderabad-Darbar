@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 const db = require('../data/db');
-const { verifyFirebaseToken } = require('../config/firebase');
+const { verifyFirebaseToken, setAdminCustomClaim } = require('../config/firebase');
 
 /**
  * Middleware to require valid Firebase Authentication (Customer or Admin)
@@ -24,7 +24,7 @@ const requireAuth = async (req, res, next) => {
     try {
       decoded = await verifyFirebaseToken(token);
     } catch (fbErr) {
-      // 2. Fallback check for signed JWT if operating in development or migration
+      // 2. Fallback check for signed JWT if operating in development/migration mode
       try {
         decoded = jwt.verify(token, config.jwtSecret);
       } catch (jwtErr) {
@@ -42,14 +42,29 @@ const requireAuth = async (req, res, next) => {
     }
 
     const uid = decoded.uid || decoded.user_id || decoded.id;
-    const email = decoded.email || '';
+    const email = (decoded.email || '').toLowerCase().trim();
     const name = decoded.name || decoded.displayName || 'Customer';
+
+    // Admin authorization checks:
+    // 1. Firebase Admin custom claim on token (decoded.admin === true or decoded.role === 'admin')
+    // 2. Configured admin email on Render (config.admin.email)
+    const hasAdminClaim = decoded.admin === true || decoded.role === 'admin';
+    const adminEmail = (config.admin.email || 'admin@hyderabaddarbar.com').toLowerCase().trim();
+    const isConfiguredAdmin = email && email === adminEmail;
+
+    // If configured admin email logs in without custom claims yet, assign admin claim
+    if (isConfiguredAdmin && !hasAdminClaim) {
+      setAdminCustomClaim(uid, true).catch(() => {});
+    }
+
+    const role = (hasAdminClaim || isConfiguredAdmin) ? 'admin' : null;
 
     // Sync or lookup user record in database
     const user = await db.syncFirebaseUser({
       firebase_uid: uid,
       email,
-      name
+      name,
+      role
     });
 
     req.user = {
@@ -107,11 +122,16 @@ const optionalAuth = async (req, res, next) => {
 
       if (decoded) {
         const uid = decoded.uid || decoded.user_id || decoded.id;
-        const email = decoded.email || '';
+        const email = (decoded.email || '').toLowerCase().trim();
+        const hasAdminClaim = decoded.admin === true || decoded.role === 'admin';
+        const adminEmail = (config.admin.email || 'admin@hyderabaddarbar.com').toLowerCase().trim();
+        const role = (hasAdminClaim || email === adminEmail) ? 'admin' : null;
+
         const user = await db.syncFirebaseUser({
           firebase_uid: uid,
           email,
-          name: decoded.name || 'Customer'
+          name: decoded.name || decoded.displayName || 'Customer',
+          role
         });
         if (user) {
           req.user = {

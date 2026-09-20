@@ -66,7 +66,14 @@ export default function AdminDashboardPage() {
     setRefreshing(true);
     try {
       const [statsRes, ordersRes, resvRes, menuRes, revRes, contactRes] = await Promise.all([
-        api.admin.getStats().catch(() => ({ success: false, data: null })),
+        api.admin.getStats().catch(async (err: any) => {
+          if (err?.message?.includes('Access denied') || err?.message?.includes('Admin privileges') || err?.message?.includes('403')) {
+            showToast('Access denied: Admin privileges required.', 'error');
+            await logout();
+            navigate('/admin/login', { replace: true });
+          }
+          return { success: false, data: null };
+        }),
         api.orders.getAll().catch(() => ({ success: false, data: [] as Order[] })),
         api.reservations.getAll().catch(() => ({ success: false, data: [] as Reservation[] })),
         api.menu.getAll().catch(() => ({ success: false, data: { items: [] as MenuItem[], grouped: {} } })),

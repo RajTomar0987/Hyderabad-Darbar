@@ -123,10 +123,31 @@ const verifyFirebaseToken = async (idToken) => {
   return await firebaseAuth.verifyIdToken(idToken);
 };
 
+/**
+ * Sets admin custom user claims on Firebase Auth user
+ * @param {string} uid
+ * @param {boolean} isAdmin
+ */
+const setAdminCustomClaim = async (uid, isAdmin = true) => {
+  if (!firebaseAuth) return false;
+  try {
+    await firebaseAuth.setCustomUserClaims(uid, {
+      admin: isAdmin,
+      role: isAdmin ? 'admin' : 'customer'
+    });
+    console.log(`[Firebase Admin] Custom admin claim set for UID: ${uid}`);
+    return true;
+  } catch (err) {
+    console.warn(`[Firebase Admin] Failed to set admin claim for ${uid}:`, err.message);
+    return false;
+  }
+};
+
 module.exports = {
   admin,
   firebaseApp,
   firebaseAuth,
   initializeFirebaseAdmin,
-  verifyFirebaseToken
+  verifyFirebaseToken,
+  setAdminCustomClaim
 };
