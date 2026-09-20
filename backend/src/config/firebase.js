@@ -124,7 +124,7 @@ const verifyFirebaseToken = async (idToken) => {
 };
 
 /**
- * Sets admin custom user claims on Firebase Auth user
+ * Sets admin custom user claims on Firebase Auth user by UID
  * @param {string} uid
  * @param {boolean} isAdmin
  */
@@ -132,14 +132,42 @@ const setAdminCustomClaim = async (uid, isAdmin = true) => {
   if (!firebaseAuth) return false;
   try {
     await firebaseAuth.setCustomUserClaims(uid, {
-      admin: isAdmin,
-      role: isAdmin ? 'admin' : 'customer'
+      admin: isAdmin
     });
-    console.log(`[Firebase Admin] Custom admin claim set for UID: ${uid}`);
+    console.log(`[Firebase Admin] Custom claim { admin: ${isAdmin} } set for UID: ${uid}`);
     return true;
   } catch (err) {
-    console.warn(`[Firebase Admin] Failed to set admin claim for ${uid}:`, err.message);
+    console.warn(`[Firebase Admin] Failed to set admin claim for UID ${uid}:`, err.message);
     return false;
+  }
+};
+
+/**
+ * Sets admin custom user claims on Firebase Auth user by Email
+ * @param {string} email
+ * @param {boolean} isAdmin
+ */
+const setAdminCustomClaimByEmail = async (email, isAdmin = true) => {
+  if (!firebaseAuth) {
+    throw new Error(
+      'Firebase Admin SDK is not initialized. Please set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY in environment variables.'
+    );
+  }
+  try {
+    const user = await firebaseAuth.getUserByEmail(email.trim().toLowerCase());
+    await firebaseAuth.setCustomUserClaims(user.uid, {
+      admin: isAdmin
+    });
+    console.log(`[Firebase Admin] Successfully assigned { admin: ${isAdmin} } to ${email} (UID: ${user.uid})`);
+    return {
+      success: true,
+      uid: user.uid,
+      email: user.email,
+      customClaims: { admin: isAdmin }
+    };
+  } catch (err) {
+    console.error(`[Firebase Admin] Error setting admin claim for ${email}:`, err.message);
+    throw err;
   }
 };
 
@@ -149,5 +177,6 @@ module.exports = {
   firebaseAuth,
   initializeFirebaseAdmin,
   verifyFirebaseToken,
-  setAdminCustomClaim
+  setAdminCustomClaim,
+  setAdminCustomClaimByEmail
 };

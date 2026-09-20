@@ -20,7 +20,7 @@ const requireAuth = async (req, res, next) => {
     const token = authHeader.split(' ')[1];
     let decoded = null;
 
-    // 1. Try verifying with Firebase Admin SDK
+    // 1. Verify with Firebase Admin SDK
     try {
       decoded = await verifyFirebaseToken(token);
     } catch (fbErr) {
@@ -45,21 +45,19 @@ const requireAuth = async (req, res, next) => {
     const email = (decoded.email || '').toLowerCase().trim();
     const name = decoded.name || decoded.displayName || 'Customer';
 
-    // Admin authorization checks:
-    // 1. Firebase Admin custom claim on token (decoded.admin === true or decoded.role === 'admin')
-    // 2. Configured admin email on Render (config.admin.email)
+    // Check Firebase Custom Claims on decoded token:
     const hasAdminClaim = decoded.admin === true || decoded.role === 'admin';
     const adminEmail = (config.admin.email || 'admin@hyderabaddarbar.com').toLowerCase().trim();
     const isConfiguredAdmin = email && email === adminEmail;
 
-    // If configured admin email logs in without custom claims yet, assign admin claim
+    // Auto-set custom claim if configured admin email logs in without it
     if (isConfiguredAdmin && !hasAdminClaim) {
       setAdminCustomClaim(uid, true).catch(() => {});
     }
 
     const role = (hasAdminClaim || isConfiguredAdmin) ? 'admin' : null;
 
-    // Sync or lookup user record in database
+    // Sync user in database
     const user = await db.syncFirebaseUser({
       firebase_uid: uid,
       email,
@@ -67,6 +65,7 @@ const requireAuth = async (req, res, next) => {
       role
     });
 
+    req.decodedToken = decoded;
     req.user = {
       id: user.id,
       uid: user.firebase_uid,
@@ -87,10 +86,15 @@ const requireAuth = async (req, res, next) => {
 
 /**
  * Middleware to require Admin privileges
+ * Verifies decoded token custom claim: decodedToken.admin === true
  */
 const requireAdmin = async (req, res, next) => {
   await requireAuth(req, res, () => {
-    if (req.user && req.user.role === 'admin') {
+    const isAuthorized =
+      (req.decodedToken && (req.decodedToken.admin === true || req.decodedToken.role === 'admin')) ||
+      (req.user && req.user.role === 'admin');
+
+    if (isAuthorized) {
       next();
     } else {
       res.status(403).json({
@@ -134,6 +138,7 @@ const optionalAuth = async (req, res, next) => {
           role
         });
         if (user) {
+          req.decodedToken = decoded;
           req.user = {
             id: user.id,
             uid: user.firebase_uid,
