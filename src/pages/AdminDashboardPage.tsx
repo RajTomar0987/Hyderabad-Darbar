@@ -496,9 +496,12 @@ export default function AdminDashboardPage() {
                   className="px-3 py-1.5 bg-ink-950 border border-ink-700 rounded-xl text-xs text-cream-100 focus:border-gold-500 focus:outline-none"
                 >
                   <option value="all">All Statuses ({orders.length})</option>
+                  <option value="pending">Pending</option>
                   <option value="confirmed">Confirmed</option>
                   <option value="preparing">Preparing</option>
-                  <option value="delivered">Delivered</option>
+                  <option value="ready">Ready</option>
+                  <option value="out_for_delivery">Out for Delivery</option>
+                  <option value="completed">Completed</option>
                   <option value="cancelled">Cancelled</option>
                 </select>
               </div>
@@ -512,7 +515,7 @@ export default function AdminDashboardPage() {
                     <th className="py-3 px-4">Customer</th>
                     <th className="py-3 px-4">Items</th>
                     <th className="py-3 px-4">Total</th>
-                    <th className="py-3 px-4">Delivery Address</th>
+                    <th className="py-3 px-4">Delivery Address / Fulfillment</th>
                     <th className="py-3 px-4">Timestamp</th>
                     <th className="py-3 px-4">Status & Action</th>
                   </tr>
@@ -521,7 +524,7 @@ export default function AdminDashboardPage() {
                   {filteredOrders.map(order => (
                     <tr key={order.id || order.orderId} className="hover:bg-ink-800/40 transition">
                       <td className="py-3.5 px-4 font-mono font-semibold text-gold-400">
-                        #{order.orderId}
+                        #{order.orderId || order.id}
                       </td>
                       <td className="py-3.5 px-4">
                         <div className="font-bold text-cream-50">{order.customerName}</div>
@@ -548,9 +551,12 @@ export default function AdminDashboardPage() {
                           onChange={(e) => handleOrderStatusChange(order.id || order.orderId, e.target.value)}
                           className="px-2.5 py-1 rounded-lg bg-ink-950 border border-ink-700 text-xs font-semibold focus:border-gold-500 focus:outline-none text-gold-300"
                         >
+                          <option value="pending">Pending</option>
                           <option value="confirmed">Confirmed</option>
                           <option value="preparing">Preparing</option>
-                          <option value="delivered">Delivered</option>
+                          <option value="ready">Ready</option>
+                          <option value="out_for_delivery">Out for Delivery</option>
+                          <option value="completed">Completed</option>
                           <option value="cancelled">Cancelled</option>
                         </select>
                       </td>

@@ -28,9 +28,11 @@ export interface MenuItem {
 
 export interface OrderItem {
   id: string;
+  menuItemId?: string;
   name: string;
   price: number;
   quantity: number;
+  subtotal?: number;
 }
 
 export interface Order {
@@ -41,11 +43,18 @@ export interface Order {
   customerName: string;
   email?: string;
   phone: string;
+  orderType?: 'pickup' | 'delivery';
   address: string;
+  pickupTime?: string;
+  deliveryInstructions?: string;
   items: OrderItem[];
+  subtotal?: number;
+  deliveryFee?: number;
   totalAmount: number;
-  status: 'pending' | 'confirmed' | 'preparing' | 'delivered' | 'cancelled';
+  status: 'pending' | 'confirmed' | 'preparing' | 'ready' | 'out_for_delivery' | 'completed' | 'delivered' | 'cancelled';
+  paymentStatus?: 'unpaid' | 'paid' | 'refunded';
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface Reservation {
@@ -216,14 +225,18 @@ export const api = {
       customerName: string;
       phone: string;
       email?: string;
-      address: string;
-      items: OrderItem[];
-      totalAmount: number;
+      orderType?: 'pickup' | 'delivery';
+      address?: string;
+      pickupTime?: string;
+      deliveryInstructions?: string;
+      items: { id: string; name?: string; price?: number; quantity: number }[];
+      totalAmount?: number;
     }) =>
       apiRequest<Order>('/api/orders', {
         method: 'POST',
         body: JSON.stringify(data)
       }),
+    getById: (id: string) => apiRequest<Order>(`/api/orders/${id}`),
     getAll: () => apiRequest<Order[]>('/api/orders'),
     updateStatus: (id: string, status: string) =>
       apiRequest<Order>(`/api/orders/${id}/status`, {

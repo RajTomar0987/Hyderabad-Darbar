@@ -279,28 +279,39 @@ export default function AccountPage() {
                   >
                     <div className="flex items-start justify-between gap-4 pb-3 border-b border-ink-800">
                       <div>
-                        <span className="text-xs font-mono text-gold-400 font-semibold">
-                          #{ord.orderId}
-                        </span>
-                        <p className="text-xs text-cream-200/50 flex items-center gap-1 mt-0.5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-mono text-gold-400 font-bold">
+                            #{ord.orderId || ord.id}
+                          </span>
+                          <span className="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-ink-950 border border-ink-700 text-cream-200">
+                            {ord.orderType === 'delivery' ? 'Delivery' : 'Pickup'}
+                          </span>
+                        </div>
+                        <p className="text-xs text-cream-200/50 flex items-center gap-1 mt-1">
                           <Clock size={12} />
                           {new Date(ord.createdAt).toLocaleDateString()} at {new Date(ord.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </p>
                       </div>
-                      <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider ${
-                        ord.status === 'delivered' ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/30' :
-                        ord.status === 'cancelled' ? 'bg-red-950 text-red-300 border border-red-500/30' :
-                        'bg-gold-500/20 text-gold-300 border border-gold-500/30'
-                      }`}>
-                        {ord.status}
-                      </span>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider ${
+                          ord.status === 'completed' || ord.status === 'delivered' ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/30' :
+                          ord.status === 'cancelled' ? 'bg-red-950 text-red-300 border border-red-500/30' :
+                          ord.status === 'out_for_delivery' || ord.status === 'ready' ? 'bg-blue-950 text-blue-300 border border-blue-500/30' :
+                          'bg-gold-500/20 text-gold-300 border border-gold-500/30'
+                        }`}>
+                          {ord.status.replace(/_/g, ' ')}
+                        </span>
+                        <span className="text-[10px] uppercase font-semibold text-cream-200/50">
+                          Payment: <strong className="text-gold-400">{ord.paymentStatus || 'unpaid'}</strong>
+                        </span>
+                      </div>
                     </div>
 
                     <div className="py-3 space-y-1.5">
                       {ord.items && ord.items.map((item, idx) => (
                         <div key={idx} className="flex items-center justify-between text-xs text-cream-100">
                           <span>{item.quantity}x {item.name}</span>
-                          <span className="text-cream-200/60 font-mono">${(item.price * item.quantity).toFixed(2)}</span>
+                          <span className="text-cream-200/60 font-mono">${(Number(item.price) * Number(item.quantity)).toFixed(2)}</span>
                         </div>
                       ))}
                     </div>
