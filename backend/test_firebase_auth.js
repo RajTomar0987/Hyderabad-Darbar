@@ -35,6 +35,35 @@ const tests = async () => {
     }
   });
 
+  // 1b. Robust formatPrivateKey Normalization Tests
+  const { formatPrivateKey } = require('./src/config/firebase');
+
+  await test('1b. formatPrivateKey handles literal \\n, quotes, and multiline PEM', () => {
+    const rawWithQuotes = '"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgk...\\n-----END PRIVATE KEY-----\\n"';
+    const formatted = formatPrivateKey(rawWithQuotes);
+    if (!formatted.startsWith('-----BEGIN PRIVATE KEY-----') || !formatted.endsWith('-----END PRIVATE KEY-----')) {
+      throw new Error('Failed to retain PEM header/footer');
+    }
+    if (formatted.includes('\\n')) {
+      throw new Error('Failed to unescape literal \\n');
+    }
+    if (formatted.startsWith('"') || formatted.endsWith('"')) {
+      throw new Error('Failed to strip surrounding double quotes');
+    }
+
+    const singleQuoted = "'-----BEGIN PRIVATE KEY-----\\nABC...\\n-----END PRIVATE KEY-----\\n'";
+    const singleFormatted = formatPrivateKey(singleQuoted);
+    if (singleFormatted.startsWith("'") || singleFormatted.endsWith("'") || singleFormatted.includes('\\n')) {
+      throw new Error('Failed to handle single-quoted private key');
+    }
+
+    const multilineReal = "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgk...\n-----END PRIVATE KEY-----";
+    const multilineFormatted = formatPrivateKey(multilineReal);
+    if (multilineFormatted !== multilineReal) {
+      throw new Error('Failed to preserve real multiline PEM');
+    }
+  });
+
   // 2. Mock / Real Firebase ID Token Generation for testing
   const customerFirebaseUid = `firebase_user_${Date.now()}`;
   const customerEmail = `customer_${Date.now()}@hyderabaddarbar.com`;

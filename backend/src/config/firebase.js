@@ -6,20 +6,38 @@ let firebaseApp = null;
 let firebaseAuth = null;
 
 /**
- * Parses and formats a private key string, unescaping newlines if necessary.
+ * Parses and formats a private key string, unescaping newlines and stripping quotes safely.
  * @param {string} key 
  * @returns {string}
  */
 const formatPrivateKey = (key) => {
-  if (!key) return '';
+  if (!key || typeof key !== 'string') return '';
   let formatted = key.trim();
-  // Remove wrapping single or double quotes
-  if ((formatted.startsWith('"') && formatted.endsWith('"')) ||
-      (formatted.startsWith("'") && formatted.endsWith("'"))) {
-    formatted = formatted.slice(1, -1);
+
+  // Strip leading/trailing matching quotes (single or double) repeatedly if nested
+  while (
+    (formatted.startsWith('"') && formatted.endsWith('"')) ||
+    (formatted.startsWith("'") && formatted.endsWith("'")) ||
+    (formatted.startsWith('`') && formatted.endsWith('`'))
+  ) {
+    formatted = formatted.slice(1, -1).trim();
   }
-  // Replace literal '\n' sequences with real newlines
-  return formatted.replace(/\\n/g, '\n');
+
+  // Unescape literal \n or \\n sequences to actual newlines
+  formatted = formatted
+    .replace(/\\\\n/g, '\n')
+    .replace(/\\n/g, '\n')
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n');
+
+  // Ensure header and footer are on their own lines
+  if (!formatted.includes('-----BEGIN') && !formatted.includes('-----END')) {
+    // If raw base64 content was provided without PEM headers
+    const cleanBase64 = formatted.replace(/\s+/g, '');
+    formatted = `-----BEGIN PRIVATE KEY-----\n${cleanBase64}\n-----END PRIVATE KEY-----`;
+  }
+
+  return formatted.trim();
 };
 
 /**
@@ -43,11 +61,17 @@ const initializeFirebaseAdmin = () => {
 
     if (clientEmail && privateKeyRaw) {
       const privateKey = formatPrivateKey(privateKeyRaw);
-      credential = cert({
-        projectId: projectId || 'hyderabad-darbar-restro',
-        clientEmail: clientEmail.trim(),
-        privateKey
-      });
+      try {
+        credential = cert({
+          projectId: projectId || 'hyderabad-darbar-restro',
+          clientEmail: clientEmail.trim(),
+          privateKey
+        });
+      } catch {
+        console.error('[Firebase Admin] Initialization failed: invalid private key format.');
+        return;
+      }
+
       if (!projectId) {
         projectId = 'hyderabad-darbar-restro';
       }
@@ -58,7 +82,12 @@ const initializeFirebaseAdmin = () => {
       let serviceAccount = null;
 
       if (raw.startsWith('{')) {
-        serviceAccount = JSON.parse(raw);
+        try {
+          serviceAccount = JSON.parse(raw);
+        } catch {
+          console.error('[Firebase Admin] Initialization failed: invalid service account JSON.');
+          return;
+        }
       } else {
         // Try base64 decoding first
         try {
@@ -72,18 +101,36 @@ const initializeFirebaseAdmin = () => {
 
         // If not base64 JSON, try requiring as a file path
         if (!serviceAccount) {
-          serviceAccount = require(raw);
+          try {
+            serviceAccount = require(raw);
+          } catch {
+            console.error('[Firebase Admin] Initialization failed: could not load service account file.');
+            return;
+          }
         }
       }
 
       if (serviceAccount) {
-        credential = cert(serviceAccount);
-        projectId = projectId || serviceAccount.project_id;
+        if (serviceAccount.private_key) {
+          serviceAccount.private_key = formatPrivateKey(serviceAccount.private_key);
+        }
+        try {
+          credential = cert(serviceAccount);
+          projectId = projectId || serviceAccount.project_id;
+        } catch {
+          console.error('[Firebase Admin] Initialization failed: invalid private key in service account.');
+          return;
+        }
       }
     }
     // 3. Check for standard Google Application Default Credentials
     else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-      credential = applicationDefault();
+      try {
+        credential = applicationDefault();
+      } catch {
+        console.error('[Firebase Admin] Initialization failed: invalid application default credentials.');
+        return;
+      }
     }
 
     // Initialize with valid credentials if resolved
@@ -100,7 +147,7 @@ const initializeFirebaseAdmin = () => {
       console.log('[Firebase Admin] Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY on Render to enable live token verification.');
     }
   } catch (err) {
-    console.error('[Firebase Admin] Initialization error:', err.message);
+    console.error('[Firebase Admin] Initialization failed: invalid private key or configuration.');
     firebaseApp = null;
     firebaseAuth = null;
   }
@@ -178,5 +225,6 @@ module.exports = {
   initializeFirebaseAdmin,
   verifyFirebaseToken,
   setAdminCustomClaim,
-  setAdminCustomClaimByEmail
+  setAdminCustomClaimByEmail,
+  formatPrivateKey
 };
