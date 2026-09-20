@@ -20,6 +20,7 @@ const app = express();
 
 // Enable Cross-Origin Resource Sharing (CORS) for Vite frontend
 const allowedOrigins = [
+  'https://hyderabad-darbar.vercel.app',
   config.clientUrl,
   'http://localhost:5173',
   'http://127.0.0.1:5173',
@@ -32,18 +33,21 @@ app.use(
     origin: (origin, callback) => {
       // Allow requests with no origin (such as mobile apps, curl, server-to-server)
       if (!origin) return callback(null, true);
-      if (
+      
+      const isAllowed = 
         allowedOrigins.includes(origin) ||
         origin.endsWith('.vercel.app') ||
-        origin.includes('hyderabad-darbar')
-      ) {
-        return callback(null, true);
+        origin === 'https://hyderabad-darbar.vercel.app';
+
+      if (isAllowed) {
+        return callback(null, origin);
       }
-      return callback(null, true);
+      
+      return callback(null, origin);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
   })
 );
 

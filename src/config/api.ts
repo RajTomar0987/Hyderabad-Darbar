@@ -3,7 +3,7 @@ import { auth } from './firebase';
 /**
  * Central API Base URL Configuration
  * 
- * - In production (Vercel): Reads directly from import.meta.env.VITE_API_URL (e.g., https://<your-render-app>.onrender.com/api)
+ * - In production (Vercel): Reads dynamically from import.meta.env.VITE_API_URL
  * - In local development: Defaults to http://localhost:5000/api if VITE_API_URL is unset
  */
 const getApiBaseUrl = (): string => {
