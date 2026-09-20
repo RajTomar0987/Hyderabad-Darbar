@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, Lock, Mail, Phone, User as UserIcon, ArrowRight, ShieldCheck, CheckCircle, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function SignupPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signup, isAuthenticated } = useAuth();
+
+  const from = location.state?.from?.pathname || location.state?.from || '/account';
 
   const [formData, setFormData] = useState({
     name: '',
@@ -24,9 +27,9 @@ export default function SignupPage() {
   // If already logged in, offer quick redirect
   React.useEffect(() => {
     if (isAuthenticated && !loading && !success) {
-      navigate('/account', { replace: true });
+      navigate(from, { replace: true });
     }
-  }, [isAuthenticated, loading, success, navigate]);
+  }, [isAuthenticated, loading, success, navigate, from]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -74,7 +77,7 @@ export default function SignupPage() {
 
       setSuccess('Account created successfully! Welcome to Hyderabad Darbar.');
       setTimeout(() => {
-        navigate('/account', { replace: true });
+        navigate(from, { replace: true });
       }, 1000);
     } catch (err: any) {
       setError(err.message || 'Signup failed. Please try again.');
@@ -272,7 +275,7 @@ export default function SignupPage() {
           <div className="mt-6 pt-6 border-t border-ink-800/80 text-center">
             <p className="text-sm text-cream-200/70">
               Already have an account?{' '}
-              <Link to="/login" className="text-gold-400 hover:text-gold-300 font-semibold underline underline-offset-4 decoration-gold-500/40 transition">
+              <Link to="/login" state={{ from }} className="text-gold-400 hover:text-gold-300 font-semibold underline underline-offset-4 decoration-gold-500/40 transition">
                 Sign In
               </Link>
             </p>

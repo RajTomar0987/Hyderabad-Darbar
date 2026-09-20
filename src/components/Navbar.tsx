@@ -1,9 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, Phone, User as UserIcon, Shield, X } from "lucide-react";
+import { Menu, Phone, User as UserIcon, Shield, X, ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { NAV_LINKS, SITE } from "../site";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 
 function linkCls(isActive: boolean, scrolled: boolean) {
   return `relative text-[13px] font-semibold uppercase tracking-[0.18em] transition-colors ${
@@ -20,6 +21,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const loc = useLocation();
   const { isAuthenticated, isAdmin } = useAuth();
+  const { openCart, totalItemsCount } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -150,6 +152,24 @@ export default function Navbar() {
               </Link>
             )}
 
+            <button
+              type="button"
+              onClick={openCart}
+              aria-label="Open cart"
+              className={`relative inline-flex items-center justify-center gap-1.5 rounded-full border px-3.5 py-2.5 text-[13px] font-extrabold uppercase tracking-[0.14em] transition active:scale-[0.98] cursor-pointer ${
+                scrolled
+                  ? "border-ink-950/20 bg-ink-950/5 text-ink-950 hover:border-gold-500 hover:text-gold-600"
+                  : "border-gold-500/40 bg-ink-900/80 text-cream-100 hover:border-gold-400 hover:text-gold-300"
+              }`}
+            >
+              <ShoppingBag size={16} className="text-gold-400" />
+              {totalItemsCount > 0 && (
+                <span className="ml-0.5 rounded-full bg-gold-500 text-ink-950 px-1.5 py-0.5 text-[10px] font-black min-w-[18px] text-center leading-none">
+                  {totalItemsCount}
+                </span>
+              )}
+            </button>
+
             <Link
               to="/order"
               className="inline-flex items-center justify-center rounded-full bg-gold-500 px-5 py-2.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-950 transition hover:bg-gold-300 active:scale-[0.98]"
@@ -158,17 +178,35 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            aria-label="Open menu"
-            aria-expanded={open}
-            className={`grid h-11 w-11 place-items-center rounded-full border lg:hidden ${
-              scrolled ? "border-ink-950/15 text-ink-950" : "border-white/20 text-cream-50"
-            }`}
-          >
-            <Menu size={20} />
-          </button>
+          <div className="flex items-center gap-2 lg:hidden">
+            <button
+              type="button"
+              onClick={openCart}
+              aria-label="Open cart"
+              className={`relative grid h-11 w-11 place-items-center rounded-full border ${
+                scrolled ? "border-ink-950/15 text-ink-950" : "border-white/20 text-cream-50"
+              }`}
+            >
+              <ShoppingBag size={18} />
+              {totalItemsCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gold-500 text-[10px] font-black text-ink-950 border border-ink-950">
+                  {totalItemsCount}
+                </span>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              aria-label="Open menu"
+              aria-expanded={open}
+              className={`grid h-11 w-11 place-items-center rounded-full border ${
+                scrolled ? "border-ink-950/15 text-ink-950" : "border-white/20 text-cream-50"
+              }`}
+            >
+              <Menu size={20} />
+            </button>
+          </div>
         </nav>
       </header>
 

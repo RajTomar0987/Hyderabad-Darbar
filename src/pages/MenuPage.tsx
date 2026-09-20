@@ -13,7 +13,7 @@ export default function MenuPage() {
               Fire, patience & <span className="text-gold-300 italic">big flavour.</span>
             </h1>
             <p className="mx-auto mt-4 max-w-xl text-cream-50/70">
-              Everything below is cooked fresh daily. Order online via our NextOrder store or
+              Everything below is cooked fresh daily. Order online via our website or
               call <a className="text-gold-300 underline" href={SITE.phoneHref}>{SITE.phoneDisplay}</a> for
               large takeaway orders.
             </p>

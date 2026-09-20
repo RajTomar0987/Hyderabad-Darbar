@@ -10,7 +10,7 @@ export default function LoginPage() {
 
   const successMessageFromNav = location.state?.successMessage;
   const initialEmail = location.state?.email || '';
-  const from = location.state?.from?.pathname || '/account';
+  const from = location.state?.from?.pathname || location.state?.from || '/account';
 
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
@@ -199,7 +199,7 @@ export default function LoginPage() {
           <div className="mt-6 pt-6 border-t border-ink-800/80 text-center">
             <p className="text-sm text-cream-200/70">
               Don't have an account yet?{' '}
-              <Link to="/signup" className="text-gold-400 hover:text-gold-300 font-semibold underline underline-offset-4 decoration-gold-500/40 transition">
+              <Link to="/signup" state={{ from }} className="text-gold-400 hover:text-gold-300 font-semibold underline underline-offset-4 decoration-gold-500/40 transition">
                 Create Account
               </Link>
             </p>

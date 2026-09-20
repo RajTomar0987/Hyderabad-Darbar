@@ -107,7 +107,7 @@ export const SITE = {
   phoneDisplay: "(03) 9791 0000",
   phoneHref: "tel:+61397910000",
   email: "hello@hyderabaddarbar.com.au",
-  orderUrl: "https://hyderabad-darbar.nextorder.com/",
+  orderUrl: "/order",
   ...
 };
 ```

@@ -1,98 +1,18 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   ShoppingBag, Search, Plus, Minus, Trash2, ArrowRight, 
-  CheckCircle2, AlertCircle, Leaf, Flame, UtensilsCrossed,
-  MapPin, Clock, ShieldCheck, X, LogIn, UserPlus
+  Leaf, Flame, UtensilsCrossed, X
 } from 'lucide-react';
-import { MENU, CATEGORIES, formatPrice, type Dish, type MenuCategory } from '../data/menu';
-import { useAuth } from '../context/AuthContext';
-import { api, type OrderItem } from '../config/api';
-
-interface CartItem {
-  dish: Dish;
-  quantity: number;
-}
-
-const PICKUP_TIME_OPTIONS = [
-  'ASAP (20–30 mins)',
-  'In 45 minutes',
-  'In 1 hour',
-  'In 1.5 hours',
-  'Specific Time (specify in notes)'
-];
+import { MENU, CATEGORIES, formatPrice, type MenuCategory } from '../data/menu';
+import { useCart } from '../context/CartContext';
 
 export default function OrderPage() {
   const navigate = useNavigate();
-  const { user, firebaseUser, isAuthenticated } = useAuth();
+  const { cart, addToCart, updateQuantity, removeFromCart, clearCart, totalItemsCount, subtotal, openCart } = useCart();
 
   const [selectedCategory, setSelectedCategory] = useState<'All' | MenuCategory>('All');
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // Cart state with local storage persistence
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    try {
-      const saved = localStorage.getItem('hd_cart_items');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('hd_cart_items', JSON.stringify(cart));
-    } catch {
-      // ignore
-    }
-  }, [cart]);
-
-  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-  const [showAuthPromptModal, setShowAuthPromptModal] = useState(false);
-
-  // Checkout form state
-  const [orderType, setOrderType] = useState<'pickup' | 'delivery'>('pickup');
-  const [pickupTime, setPickupTime] = useState<string>('ASAP (20–30 mins)');
-  const [checkoutForm, setCheckoutForm] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    address: '52D Foster Street, Dandenong VIC 3175 (Store Pickup)',
-    notes: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [orderError, setOrderError] = useState<string | null>(null);
-  const [placedOrder, setPlacedOrder] = useState<any | null>(null);
-
-  // Sync user info into checkout form when user is authenticated
-  useEffect(() => {
-    const defaultName = user?.displayName || firebaseUser?.displayName || (user?.name && user.name !== 'Customer' ? user.name : '');
-    const defaultEmail = user?.email || firebaseUser?.email || '';
-    const defaultPhone = user?.phone || firebaseUser?.phoneNumber || '';
-
-    setCheckoutForm(prev => ({
-      ...prev,
-      name: prev.name || defaultName || '',
-      email: prev.email || defaultEmail || '',
-      phone: prev.phone || defaultPhone || ''
-    }));
-  }, [user, firebaseUser]);
-
-  // Update address default when toggling order type
-  const handleOrderTypeChange = (type: 'pickup' | 'delivery') => {
-    setOrderType(type);
-    if (type === 'pickup') {
-      setCheckoutForm(prev => ({
-        ...prev,
-        address: '52D Foster Street, Dandenong VIC 3175 (Store Pickup)'
-      }));
-    } else {
-      setCheckoutForm(prev => ({
-        ...prev,
-        address: prev.address === '52D Foster Street, Dandenong VIC 3175 (Store Pickup)' ? '' : prev.address
-      }));
-    }
-  };
 
   // Filtered menu items
   const filteredDishes = useMemo(() => {
@@ -109,124 +29,8 @@ export default function OrderPage() {
     return list;
   }, [selectedCategory, searchQuery]);
 
-  // Cart operations
-  const addToCart = (dish: Dish) => {
-    setCart(prev => {
-      const existing = prev.find(item => item.dish.id === dish.id);
-      if (existing) {
-        return prev.map(item =>
-          item.dish.id === dish.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      return [...prev, { dish, quantity: 1 }];
-    });
-  };
-
-  const updateQuantity = (dishId: string, delta: number) => {
-    setCart(prev => {
-      return prev
-        .map(item => {
-          if (item.dish.id === dishId) {
-            const newQty = item.quantity + delta;
-            return newQty > 0 ? { ...item, quantity: newQty } : null;
-          }
-          return item;
-        })
-        .filter(Boolean) as CartItem[];
-    });
-  };
-
-  const removeFromCart = (dishId: string) => {
-    setCart(prev => prev.filter(item => item.dish.id !== dishId));
-  };
-
-  const clearCart = () => {
-    setCart([]);
-    try {
-      localStorage.removeItem('hd_cart_items');
-    } catch {
-      // ignore
-    }
-  };
-
-  // Cart totals
-  const totalItemsCount = useMemo(() => cart.reduce((acc, item) => acc + item.quantity, 0), [cart]);
-  const subtotal = useMemo(() => cart.reduce((acc, item) => acc + item.dish.price * item.quantity, 0), [cart]);
-  const deliveryFee = orderType === 'delivery' ? (subtotal > 60 ? 0 : 5) : 0;
-  const grandTotal = subtotal + deliveryFee;
-
-  // Intercept checkout if not logged in
   const handleProceedToCheckout = () => {
-    if (!isAuthenticated) {
-      setShowAuthPromptModal(true);
-      return;
-    }
-    setShowCheckoutModal(true);
-  };
-
-  // Submit Order to backend
-  const handlePlaceOrder = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (cart.length === 0) return;
-
-    if (!isAuthenticated) {
-      setShowCheckoutModal(false);
-      setShowAuthPromptModal(true);
-      return;
-    }
-
-    if (!checkoutForm.name.trim()) {
-      setOrderError('Please provide your full name.');
-      return;
-    }
-    if (!checkoutForm.phone.trim()) {
-      setOrderError('Please provide a contact phone number.');
-      return;
-    }
-    if (orderType === 'delivery' && !checkoutForm.address.trim()) {
-      setOrderError('Please provide your complete delivery address.');
-      return;
-    }
-
-    setIsSubmitting(true);
-    setOrderError(null);
-
-    const orderPayloadItems: OrderItem[] = cart.map(item => ({
-      id: item.dish.id,
-      name: item.dish.name,
-      price: item.dish.price,
-      quantity: item.quantity
-    }));
-
-    const finalAddress = orderType === 'pickup' 
-      ? '52D Foster Street, Dandenong VIC 3175 (Store Pickup)'
-      : checkoutForm.address.trim();
-
-    try {
-      const response = await api.orders.create({
-        customerName: checkoutForm.name.trim(),
-        phone: checkoutForm.phone.trim(),
-        email: checkoutForm.email.trim() || undefined,
-        orderType,
-        address: finalAddress,
-        pickupTime: orderType === 'pickup' ? pickupTime : undefined,
-        deliveryInstructions: checkoutForm.notes.trim() || undefined,
-        items: orderPayloadItems,
-        totalAmount: Number(grandTotal.toFixed(2))
-      });
-
-      if (response.success && response.data) {
-        setPlacedOrder(response.data);
-        clearCart();
-        setShowCheckoutModal(false);
-      } else {
-        throw new Error(response.message || 'Failed to submit your order.');
-      }
-    } catch (err: any) {
-      setOrderError(err.message || 'Failed to submit order. Please verify details and try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    navigate('/checkout');
   };
 
   return (
@@ -244,90 +48,10 @@ export default function OrderPage() {
               Order Online
             </h1>
             <p className="mt-3 text-sm sm:text-base text-cream-200/70 leading-relaxed">
-              Order authentic Hyderabadi Dum Biryanis, sizzling charcoal tandoori grills, curries, and fresh breads prepared for pickup or express delivery in Dandenong.
+              Authentic Hyderabadi Dum Biryanis, sizzling charcoal tandoori grills, curries, and fresh breads prepared for pickup or express local delivery in Dandenong.
             </p>
           </div>
         </div>
-
-        {/* Order Confirmed Screen */}
-        {placedOrder && (
-          <div className="mb-10 p-6 sm:p-10 bg-ink-900/95 border border-emerald-500/40 rounded-3xl shadow-2xl animate-fadeIn">
-            <div className="max-w-xl mx-auto text-center">
-              <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/30">
-                <CheckCircle2 size={36} />
-              </div>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-cream-50 mb-2">
-                Order Received Successfully!
-              </h2>
-              <p className="text-sm text-cream-200/80 mb-6">
-                Thank you, <strong className="text-gold-300">{placedOrder.customerName}</strong>. Our kitchen has received your order and is preparing your meal.
-              </p>
-              
-              <div className="bg-ink-950/90 border border-ink-700/80 rounded-2xl p-5 mb-6 text-left text-xs space-y-2.5">
-                <div className="flex justify-between border-b border-ink-800 pb-2">
-                  <span className="text-cream-200/60">Order Number:</span>
-                  <span className="font-mono text-gold-400 font-bold">#{placedOrder.orderId || placedOrder.id}</span>
-                </div>
-                <div className="flex justify-between border-b border-ink-800 pb-2">
-                  <span className="text-cream-200/60">Fulfillment Type:</span>
-                  <span className="text-cream-100 font-semibold uppercase">{placedOrder.orderType || 'Pickup'}</span>
-                </div>
-                {placedOrder.orderType === 'pickup' && placedOrder.pickupTime && (
-                  <div className="flex justify-between border-b border-ink-800 pb-2">
-                    <span className="text-cream-200/60">Pickup Time:</span>
-                    <span className="text-gold-300 font-medium">{placedOrder.pickupTime}</span>
-                  </div>
-                )}
-                <div className="flex justify-between border-b border-ink-800 pb-2">
-                  <span className="text-cream-200/60">Address / Location:</span>
-                  <span className="text-cream-100 max-w-[260px] text-right truncate">{placedOrder.address}</span>
-                </div>
-                <div className="flex justify-between border-b border-ink-800 pb-2">
-                  <span className="text-cream-200/60">Order Status:</span>
-                  <span className="text-amber-400 font-bold uppercase">{placedOrder.status || 'pending'}</span>
-                </div>
-                <div className="flex justify-between border-b border-ink-800 pb-2">
-                  <span className="text-cream-200/60">Payment Status:</span>
-                  <span className="text-gold-400 font-bold uppercase">{placedOrder.paymentStatus || 'unpaid (pay at counter / cash on delivery)'}</span>
-                </div>
-
-                {/* Items Summary in Receipt */}
-                <div className="pt-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-cream-200/50 mb-1.5">Items Ordered:</p>
-                  <div className="space-y-1">
-                    {placedOrder.items && placedOrder.items.map((it: any, idx: number) => (
-                      <div key={idx} className="flex justify-between text-cream-200 text-xs">
-                        <span>{it.quantity}x {it.name}</span>
-                        <span className="font-mono text-cream-200/70">${(Number(it.price) * Number(it.quantity)).toFixed(2)}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex justify-between pt-2 border-t border-ink-800 text-sm font-bold">
-                  <span className="text-cream-100">Total Charged:</span>
-                  <span className="text-gold-300 font-mono text-base">${Number(placedOrder.totalAmount).toFixed(2)}</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  to="/account"
-                  className="w-full sm:w-auto px-7 py-3 rounded-full bg-gold-500 hover:bg-gold-400 text-ink-950 text-xs font-black uppercase tracking-wider transition shadow-lg"
-                >
-                  VIEW MY ORDERS
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => setPlacedOrder(null)}
-                  className="w-full sm:w-auto px-6 py-3 rounded-full bg-ink-800 border border-ink-700 text-cream-200 text-xs font-bold uppercase tracking-wider hover:bg-ink-700 transition cursor-pointer"
-                >
-                  Order More Items
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Main Grid: Menu Browser + Desktop Sticky Cart */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 items-start">
@@ -452,6 +176,7 @@ export default function OrderPage() {
                                 type="button"
                                 onClick={() => updateQuantity(dish.id, -1)}
                                 className="w-5 h-5 rounded-full flex items-center justify-center text-gold-300 hover:bg-gold-500 hover:text-ink-950 transition cursor-pointer"
+                                aria-label="Decrease quantity"
                               >
                                 <Minus size={12} />
                               </button>
@@ -460,6 +185,7 @@ export default function OrderPage() {
                                 type="button"
                                 onClick={() => updateQuantity(dish.id, 1)}
                                 className="w-5 h-5 rounded-full flex items-center justify-center text-gold-300 hover:bg-gold-500 hover:text-ink-950 transition cursor-pointer"
+                                aria-label="Increase quantity"
                               >
                                 <Plus size={12} />
                               </button>
@@ -468,7 +194,7 @@ export default function OrderPage() {
                             <button
                               type="button"
                               onClick={() => addToCart(dish)}
-                              className="px-3 py-1 rounded-full bg-gold-500 hover:bg-gold-400 text-ink-950 text-xs font-extrabold uppercase tracking-wider transition cursor-pointer shadow-sm"
+                              className="px-3.5 py-1.5 rounded-full bg-gold-500 hover:bg-gold-400 text-ink-950 text-xs font-black uppercase tracking-wider transition cursor-pointer shadow-sm"
                             >
                               Add +
                             </button>
@@ -493,7 +219,7 @@ export default function OrderPage() {
                 <button
                   type="button"
                   onClick={clearCart}
-                  className="text-[11px] text-red-400 hover:text-red-300 transition uppercase tracking-wider"
+                  className="text-[11px] text-red-400 hover:text-red-300 transition uppercase tracking-wider cursor-pointer"
                 >
                   Clear
                 </button>
@@ -558,26 +284,19 @@ export default function OrderPage() {
                     <span>Subtotal ({totalItemsCount} items)</span>
                     <span className="font-mono text-cream-50">${subtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Fulfillment</span>
-                    <span className="capitalize text-gold-300">{orderType}</span>
-                  </div>
-                  {orderType === 'delivery' && (
-                    <div className="flex justify-between">
-                      <span>Delivery Fee</span>
-                      <span className="font-mono text-cream-50">{deliveryFee === 0 ? 'FREE (over $60)' : `$${deliveryFee.toFixed(2)}`}</span>
-                    </div>
-                  )}
+                  <p className="text-[11px] text-cream-200/40">
+                    Pickup & delivery options selected at checkout.
+                  </p>
                   <div className="flex justify-between pt-2 border-t border-ink-800 text-sm font-bold text-cream-50">
-                    <span>Total</span>
-                    <span className="font-mono text-gold-300 text-base">${grandTotal.toFixed(2)}</span>
+                    <span>Subtotal</span>
+                    <span className="font-mono text-gold-300 text-base">${subtotal.toFixed(2)}</span>
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={handleProceedToCheckout}
-                  className="w-full py-3.5 rounded-full bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 text-ink-950 font-extrabold uppercase tracking-wider text-xs shadow-lg hover:brightness-110 transition cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-3.5 rounded-full bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 text-ink-950 font-black uppercase tracking-wider text-xs shadow-lg hover:brightness-110 transition cursor-pointer flex items-center justify-center gap-2"
                 >
                   <span>Proceed to Checkout</span>
                   <ArrowRight size={14} />
@@ -588,275 +307,31 @@ export default function OrderPage() {
         </div>
       </div>
 
-      {/* Floating Bottom Cart Bar for Mobile */}
+      {/* Floating Sticky Cart Button / Bar */}
       {cart.length > 0 && (
-        <div className="lg:hidden fixed inset-x-3 bottom-3 z-40 bg-ink-900 border border-gold-500/40 rounded-2xl p-3.5 shadow-2xl flex items-center justify-between backdrop-blur">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gold-500 text-ink-950 flex items-center justify-center font-bold font-mono text-sm shadow">
-              {totalItemsCount}
-            </div>
-            <div>
-              <p className="text-[11px] text-cream-200/60 uppercase tracking-wider">Subtotal</p>
-              <p className="font-mono font-bold text-gold-300 text-sm">${subtotal.toFixed(2)}</p>
-            </div>
-          </div>
+        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 animate-fadeIn">
           <button
             type="button"
-            onClick={handleProceedToCheckout}
-            className="px-5 py-2.5 rounded-full bg-gold-500 text-ink-950 text-xs font-extrabold uppercase tracking-wider hover:bg-gold-400 transition cursor-pointer flex items-center gap-1.5"
+            onClick={openCart}
+            className="flex items-center gap-3 px-5 py-3.5 rounded-full bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 text-ink-950 shadow-2xl hover:brightness-110 transition active:scale-95 cursor-pointer border border-gold-300/40"
+            aria-label="Open cart drawer"
           >
-            <span>Review & Order</span>
-            <ArrowRight size={14} />
+            <div className="relative">
+              <ShoppingBag size={20} className="stroke-[2.5]" />
+              <span className="absolute -top-2 -right-2 w-5 h-5 bg-ink-950 text-gold-300 text-[10px] font-black rounded-full flex items-center justify-center border border-gold-400">
+                {totalItemsCount}
+              </span>
+            </div>
+            <div className="text-left font-sans">
+              <div className="text-[10px] uppercase tracking-wider font-extrabold text-ink-900/80 leading-none">
+                Cart Total
+              </div>
+              <div className="font-mono font-bold text-sm leading-tight text-ink-950">
+                ${subtotal.toFixed(2)}
+              </div>
+            </div>
+            <ArrowRight size={16} className="ml-1" />
           </button>
-        </div>
-      )}
-
-      {/* Auth Prompt Modal (If customer tries to checkout while unauthenticated) */}
-      {showAuthPromptModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="w-full max-w-md bg-ink-900 border border-gold-500/40 rounded-3xl p-6 sm:p-8 relative shadow-2xl text-center">
-            <button
-              type="button"
-              onClick={() => setShowAuthPromptModal(false)}
-              className="absolute top-5 right-5 text-cream-200/50 hover:text-cream-50"
-            >
-              <X size={20} />
-            </button>
-
-            <div className="w-14 h-14 bg-gold-500/10 border border-gold-500/30 rounded-2xl flex items-center justify-center text-gold-400 mx-auto mb-4">
-              <ShieldCheck size={28} />
-            </div>
-
-            <h3 className="font-display text-2xl font-bold text-cream-50 mb-2">
-              Sign In to Place Order
-            </h3>
-            <p className="text-xs text-cream-200/70 mb-6 leading-relaxed">
-              Please sign in or create an account to submit your order and track live kitchen status in your member account. Your cart items are saved.
-            </p>
-
-            <div className="space-y-3">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowAuthPromptModal(false);
-                  navigate('/login', { state: { from: '/order' } });
-                }}
-                className="w-full py-3.5 rounded-full bg-gold-500 hover:bg-gold-400 text-ink-950 font-extrabold text-xs uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-2 shadow-lg"
-              >
-                <LogIn size={15} />
-                <span>Sign In with Account</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setShowAuthPromptModal(false);
-                  navigate('/signup', { state: { from: '/order' } });
-                }}
-                className="w-full py-3 rounded-full bg-ink-950 border border-gold-500/40 text-gold-300 font-bold text-xs uppercase tracking-wider hover:bg-ink-800 transition cursor-pointer flex items-center justify-center gap-2"
-              >
-                <UserPlus size={15} />
-                <span>Create New Account</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Checkout Modal */}
-      {showCheckoutModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="w-full max-w-lg bg-ink-900 border border-gold-500/30 rounded-3xl p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
-            <button
-              type="button"
-              onClick={() => setShowCheckoutModal(false)}
-              className="absolute top-5 right-5 text-cream-200/50 hover:text-cream-50"
-            >
-              <X size={20} />
-            </button>
-
-            <div className="flex items-center gap-2 mb-2">
-              <ShieldCheck className="text-gold-400" size={20} />
-              <h3 className="font-display text-2xl font-bold text-cream-50">
-                Complete Your Order
-              </h3>
-            </div>
-            <p className="text-xs text-cream-200/70 mb-5">
-              Review your items and confirm fulfillment details for kitchen dispatch.
-            </p>
-
-            {orderError && (
-              <div className="mb-4 p-3 bg-red-950/60 border border-red-500/30 rounded-xl text-red-200 text-xs flex items-center gap-2">
-                <AlertCircle size={16} className="text-red-400 shrink-0" />
-                <span>{orderError}</span>
-              </div>
-            )}
-
-            <form onSubmit={handlePlaceOrder} className="space-y-4 text-xs">
-              {/* Pickup / Delivery Toggle */}
-              <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-cream-200/90 mb-2">
-                  Fulfillment Method
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => handleOrderTypeChange('pickup')}
-                    className={`py-2.5 px-4 rounded-xl font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-2 ${
-                      orderType === 'pickup'
-                        ? 'bg-gold-500 text-ink-950 shadow'
-                        : 'bg-ink-950 border border-ink-700 text-cream-200/70 hover:border-gold-500/40'
-                    }`}
-                  >
-                    <Clock size={14} />
-                    <span>Store Pickup</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleOrderTypeChange('delivery')}
-                    className={`py-2.5 px-4 rounded-xl font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-2 ${
-                      orderType === 'delivery'
-                        ? 'bg-gold-500 text-ink-950 shadow'
-                        : 'bg-ink-950 border border-ink-700 text-cream-200/70 hover:border-gold-500/40'
-                    }`}
-                  >
-                    <MapPin size={14} />
-                    <span>Express Delivery</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Pickup Time or Delivery Address */}
-              {orderType === 'pickup' ? (
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-cream-200/90 mb-1">
-                      Preferred Pickup Time
-                    </label>
-                    <select
-                      value={pickupTime}
-                      onChange={(e) => setPickupTime(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-ink-950 border border-ink-700 rounded-xl text-cream-50 focus:border-gold-500 focus:outline-none"
-                    >
-                      {PICKUP_TIME_OPTIONS.map(opt => (
-                        <option key={opt} value={opt}>{opt}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="p-3 bg-ink-950/80 border border-ink-800 rounded-xl text-cream-200/80 flex items-start gap-2.5">
-                    <MapPin size={16} className="text-gold-400 shrink-0 mt-0.5" />
-                    <div className="text-[11px] leading-relaxed">
-                      <strong className="text-cream-100">Store Pickup Location:</strong><br />
-                      Hyderabad Darbar, 52D Foster Street, Dandenong VIC 3175<br />
-                      <span className="text-cream-200/60">Phone: (03) 9792 2288</span>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-cream-200/90 mb-1">
-                    Delivery Address <span className="text-gold-400">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={checkoutForm.address}
-                    onChange={(e) => setCheckoutForm(prev => ({ ...prev, address: e.target.value }))}
-                    placeholder="Unit/Street number, street name, suburb (e.g. Dandenong VIC)"
-                    className="w-full px-3.5 py-2.5 bg-ink-950 border border-ink-700 rounded-xl text-cream-50 focus:border-gold-500 focus:outline-none"
-                  />
-                </div>
-              )}
-
-              {/* Customer Contact Details */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-cream-200/90 mb-1">
-                    Your Name <span className="text-gold-400">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={checkoutForm.name}
-                    onChange={(e) => setCheckoutForm(prev => ({ ...prev, name: e.target.value }))}
-                    placeholder="e.g. Tariq Khan"
-                    className="w-full px-3.5 py-2.5 bg-ink-950 border border-ink-700 rounded-xl text-cream-50 focus:border-gold-500 focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-cream-200/90 mb-1">
-                    Phone Number <span className="text-gold-400">*</span>
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={checkoutForm.phone}
-                    onChange={(e) => setCheckoutForm(prev => ({ ...prev, phone: e.target.value }))}
-                    placeholder="0412 345 678"
-                    className="w-full px-3.5 py-2.5 bg-ink-950 border border-ink-700 rounded-xl text-cream-50 focus:border-gold-500 focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-cream-200/90 mb-1">
-                  Email Address (for order confirmation)
-                </label>
-                <input
-                  type="email"
-                  value={checkoutForm.email}
-                  onChange={(e) => setCheckoutForm(prev => ({ ...prev, email: e.target.value }))}
-                  placeholder="you@domain.com"
-                  className="w-full px-3.5 py-2.5 bg-ink-950 border border-ink-700 rounded-xl text-cream-50 focus:border-gold-500 focus:outline-none"
-                />
-              </div>
-
-              {/* Special Instructions */}
-              <div>
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-cream-200/90 mb-1">
-                  Kitchen Notes / Delivery Instructions
-                </label>
-                <textarea
-                  rows={2}
-                  value={checkoutForm.notes}
-                  onChange={(e) => setCheckoutForm(prev => ({ ...prev, notes: e.target.value }))}
-                  placeholder="Spice preference, extra raita, gate code, leave at porch..."
-                  className="w-full px-3.5 py-2 bg-ink-950 border border-ink-700 rounded-xl text-cream-50 focus:border-gold-500 focus:outline-none"
-                />
-              </div>
-
-              {/* Order Summary Recap */}
-              <div className="bg-ink-950 p-4 rounded-xl border border-ink-800 space-y-2">
-                <div className="flex justify-between font-semibold text-cream-100">
-                  <span>Total Payable:</span>
-                  <span className="font-mono text-gold-300 text-sm">${grandTotal.toFixed(2)}</span>
-                </div>
-                <p className="text-[11px] text-cream-200/50">
-                  Payment Status: <strong>Unpaid</strong> (Pay at counter for pickup, or cash on delivery).
-                </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowCheckoutModal(false)}
-                  className="flex-1 py-3 rounded-full border border-ink-700 text-cream-200 font-bold uppercase tracking-wider hover:bg-ink-800 transition cursor-pointer"
-                >
-                  Back
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="flex-1 py-3 rounded-full bg-gold-500 text-ink-950 font-extrabold uppercase tracking-wider hover:bg-gold-400 transition disabled:opacity-50 cursor-pointer shadow-lg"
-                >
-                  {isSubmitting ? 'Submitting...' : 'Confirm & Place Order'}
-                </button>
-              </div>
-            </form>
-          </div>
         </div>
       )}
     </div>
